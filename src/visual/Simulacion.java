@@ -671,14 +671,14 @@ public class Simulacion extends JDialog {
 						int visitante = CarrerasTotalesVisitante;
 						if(local > visitante) {
 							JOptionPane.showMessageDialog(null, "El partido ha terminado ha ganado el equipo local!");
-							int JGL = Administracion.getInstancia().getMisEquipos().get(Local).getJugGanados();
-							int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJugJugados();
-							int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugJugados();
-							int JPV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugPerdidos();
-							Administracion.getInstancia().getMisEquipos().get(Local).setJugGanados(JGL + 1);
-							Administracion.getInstancia().getMisEquipos().get(Local).setJugJugados(JJL + 1);
-							Administracion.getInstancia().getMisEquipos().get(Visitante).setJugJugados(JJV + 1);
-							Administracion.getInstancia().getMisEquipos().get(Visitante).setJugPerdidos(JPV + 1);
+							int JGL = Administracion.getInstancia().getMisEquipos().get(Local).getJuegosGanados();
+							int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJuegosJugados();
+							int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJuegosJugados();
+							int JPV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJuegosPerdidos();
+							Administracion.getInstancia().getMisEquipos().get(Local).setJuegosGanados(JGL + 1);
+							Administracion.getInstancia().getMisEquipos().get(Local).setJuegosGanados(JJL + 1);
+							Administracion.getInstancia().getMisEquipos().get(Visitante).setJuegosGanados(JJV + 1);
+							Administracion.getInstancia().getMisEquipos().get(Visitante).setJuegosPerdidos(JPV + 1);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrLoc(CarrerasTotalesLocal);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrVis(CarrerasTotalesVisitante);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setGanador(Administracion.getInstancia().getMisEquipos().get(Local).getNombre());
@@ -699,14 +699,14 @@ public class Simulacion extends JDialog {
 						}
 						else if(visitante > local){
 							JOptionPane.showMessageDialog(null, "El partido ha terminado, ha ganado el equipo visitante!");
-							int JGV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugGanados();
-							int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugJugados();
-							int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJugJugados();
-							int JPL = Administracion.getInstancia().getMisEquipos().get(Local).getJugPerdidos();
-							Administracion.getInstancia().getMisEquipos().get(Visitante).setJugGanados(JGV + 1);
-							Administracion.getInstancia().getMisEquipos().get(Visitante).setJugJugados(JJV + 1);
-							Administracion.getInstancia().getMisEquipos().get(Local).setJugJugados(JJL + 1);
-							Administracion.getInstancia().getMisEquipos().get(Local).setJugPerdidos(JPL + 1);
+							int JGV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJuegosGanados();
+							int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJuegosJugados();
+							int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJuegosJugados();
+							int JPL = Administracion.getInstancia().getMisEquipos().get(Local).getJuegosPerdidos();
+							Administracion.getInstancia().getMisEquipos().get(Visitante).setJuegosGanados(JGV + 1);
+							Administracion.getInstancia().getMisEquipos().get(Visitante).setJuegosGanados(JJV + 1);
+							Administracion.getInstancia().getMisEquipos().get(Local).setJuegosGanados(JJL + 1);
+							Administracion.getInstancia().getMisEquipos().get(Local).setJuegosPerdidos(JPL + 1);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrLoc(CarrerasTotalesLocal);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrVis(CarrerasTotalesVisitante);
 							Administracion.getInstancia().getMisPartidos().get(MiPartido).setGanador(Administracion.getInstancia().getMisEquipos().get(Visitante).getNombre());
@@ -726,10 +726,10 @@ public class Simulacion extends JDialog {
 						}
 						else if(local == visitante) {
 						JOptionPane.showMessageDialog(null, "El partido ha terminado empate!");
-						int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugJugados();
-						int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJugJugados();
-						Administracion.getInstancia().getMisEquipos().get(Visitante).setJugJugados(JJV + 1);
-						Administracion.getInstancia().getMisEquipos().get(Local).setJugJugados(JJL + 1);
+						int JJV = Administracion.getInstancia().getMisEquipos().get(Visitante).getJuegosJugados();
+						int JJL = Administracion.getInstancia().getMisEquipos().get(Local).getJuegosJugados();
+						Administracion.getInstancia().getMisEquipos().get(Visitante).setJuegosGanados(JJV + 1);
+						Administracion.getInstancia().getMisEquipos().get(Local).setJuegosGanados(JJL + 1);
 						Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrLoc(CarrerasTotalesLocal);
 						Administracion.getInstancia().getMisPartidos().get(MiPartido).setCarrVis(CarrerasTotalesVisitante);
 						Administracion.getInstancia().getMisPartidos().get(MiPartido).setGanador("Empate");
@@ -998,14 +998,14 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 != 0) {
 			String aux = (String) TablePitcherLocal.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getEntradasJugadas();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setEntradasJugadas(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getEntradasJugadas();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setEntradasJugadas(help2 + 1);
 		}
 		else if(EntradaAux % 2 == 0) {
 			String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getEntradasJugadas();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setEntradasJugadas(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getEntradasJugadas();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setEntradasJugadas(help2 + 1);
 		}
 	}
 	
@@ -1013,56 +1013,56 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 != 0) {
 			String aux = (String) TablePitcherLocal.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getHitsPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getHitsPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
 		}
 		else if(EntradaAux % 2 == 0) {
 			String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getHitsPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getHitsPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
 		}
 	}
 	protected void ActualizarCarrerasPitcher() {
 		if(EntradaAux % 2 != 0) {
 			String aux = (String) TablePitcherLocal.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getCarrPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getCarrPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
 		}
 		else if(EntradaAux % 2 == 0) {
 			String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getCarrPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getCarrPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
 		}
 	}
 	protected void ActualizarJonronesPitcher() {
 		if(EntradaAux % 2 != 0) {
 			String aux = (String) TablePitcherLocal.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getJonronPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getJonronPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
 		}
 		else if(EntradaAux % 2 == 0) {
 			String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getJonronPitch();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getJonronPitch();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
 		}
 	}
 	protected void ActualizarCarrerasLimpias() {
 		if(EntradaAux % 2 != 0) {
 			String aux = (String) TablePitcherLocal.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getCarrLimpias();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getCarrLimpias();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
 		}
 		else if(EntradaAux % 2 == 0) {
 			String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getCarrLimpias();
-			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
+			int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getCarrLimpias();
+			((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
 		}
 	}
 	protected void ActualizarAB() {
@@ -1070,15 +1070,15 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 == 0) {
 			String aux = (String) TableCampoLocal.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getAB();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setH(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getAB();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setH(help2 + 1);
 			
 		}
 		else if(EntradaAux % 2 != 0) {
 			String aux = (String) TableCampoVisitante.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getAB();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setH(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getAB();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setH(help2 + 1);
 		}
 		
 	}
@@ -1088,17 +1088,17 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 == 0) {
 			String aux = (String) TableCampoLocal.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getH();
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getH();
 
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setH(help2 + 1);
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setH(help2 + 1);
 
 			
 		}
 		else if(EntradaAux % 2 != 0) {
 			String aux = (String) TableCampoVisitante.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getH();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setH(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getH();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setH(help2 + 1);
 		}
 		
 	}
@@ -1107,14 +1107,14 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 == 0) {
 			String aux = (String) TableCampoLocal.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getD();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setD(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getD();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setD(help2 + 1);
 		}
 		else if(EntradaAux % 2 != 0) {
 			String aux = (String) TableCampoVisitante.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getD();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setD(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getD();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setD(help2 + 1);
 		}
 		
 	}
@@ -1123,14 +1123,14 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 == 0) {
 			String aux = (String) TableCampoLocal.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getHR();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setHR(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getHR();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setHR(help2 + 1);
 		}
 		else if(EntradaAux % 2 != 0) {
 			String aux = (String) TableCampoVisitante.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getHR();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setHR(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getHR();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setHR(help2 + 1);
 		}
 		
 	}
@@ -1139,14 +1139,14 @@ public class Simulacion extends JDialog {
 		if(EntradaAux % 2 == 0) {
 			String aux = (String) TableCampoLocal.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Local, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getErrores();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setErrores(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().getErrores();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(help)).getEstad().setErrores(help2 + 1);
 		}
 		else if(EntradaAux % 2 != 0) {
 			String aux = (String) TableCampoVisitante.getValueAt(index, 0);
 			int help = Administracion.getInstancia().findJugador(Visitante, aux);
-			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getErrores();
-			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setErrores(help2 + 1);
+			int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().getErrores();
+			((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(help)).getEstad().setErrores(help2 + 1);
 		}
 		
 	}	
@@ -1154,7 +1154,7 @@ public class Simulacion extends JDialog {
 	public static void LoadCampoLocal() {
 		modelCampoLocal.setRowCount(0);
 		fila = new Object[modelCampoLocal.getColumnCount()];
-		for (Jugador help : Administracion.getInstancia().getMisEquipos().get(Local).getJugadores()) {
+		for (Jugador help : Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores()) {
 			if(help instanceof JugCampo) {
 				if(help.isEstado()) {
 				fila[0] = help.getNombre();
@@ -1169,7 +1169,7 @@ public class Simulacion extends JDialog {
 	public static void LoadCampoVisitante() {
 		modelCampoVisitante.setRowCount(0);
 		fila = new Object[modelCampoVisitante.getColumnCount()];
-		for (Jugador help : Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores()) {
+		for (Jugador help : Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores()) {
 			if(help instanceof JugCampo) {
 				if(help.isEstado()) {
 					fila[0] = help.getNombre();
@@ -1185,18 +1185,18 @@ public class Simulacion extends JDialog {
 	public static void LoadPitcherLocal() {
 		modelPitcherLocal.setRowCount(0);
 		fila = new Object[modelPitcherLocal.getColumnCount()];
-		fila[0] = Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(NuevoPitcher).getNombre();
-		fila[1] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(NuevoPitcher)).getEstad().getCarrPitch();
-		fila[2] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(NuevoPitcher)).getEstad().getJonronPitch();
+		fila[0] = Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(NuevoPitcher).getNombre();
+		fila[1] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(NuevoPitcher)).getEstad().getCarrPitch();
+		fila[2] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getMisJugadores().get(NuevoPitcher)).getEstad().getJonronPitch();
 		modelPitcherLocal.addRow(fila);
 	}
 	
 	public static void LoadPitcherVisitante() {
 		modelPitcherVisitante.setRowCount(0);
 		fila = new Object[modelPitcherVisitante.getColumnCount()];
-		fila[0] = Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(NuevoPitcherVis).getNombre();
-		fila[1] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(NuevoPitcherVis)).getEstad().getCarrPitch();
-		fila[2] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(NuevoPitcherVis)).getEstad().getJonronPitch();		
+		fila[0] = Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(NuevoPitcherVis).getNombre();
+		fila[1] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(NuevoPitcherVis)).getEstad().getCarrPitch();
+		fila[2] = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getMisJugadores().get(NuevoPitcherVis)).getEstad().getJonronPitch();		
 		modelPitcherVisitante.addRow(fila);
 	}
 }

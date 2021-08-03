@@ -73,7 +73,7 @@ public class Ranking extends JDialog {
 					@Override
 					public int compare(Equipo o1, Equipo o2) {
 						// TODO Auto-generated method stub
-						return Integer.valueOf(o2.getJugGanados()).compareTo(o1.getJugGanados());
+						return Integer.valueOf(o2.getJuegosJugados()).compareTo(o1.getJuegosJugados());
 					}
 					
 				});
@@ -137,13 +137,13 @@ public class Ranking extends JDialog {
 		fila = new Object[model.getColumnCount()];
 		for (int i = 0; i < Ranking.size(); i++) {
 			fila[0] = Ranking.get(i).getNombre();
-			fila[1] = Ranking.get(i).getManager();
-			fila[2] = Ranking.get(i).getJugJugados();
-			fila[3] = Ranking.get(i).getJugGanados();
-			fila[4] = Ranking.get(i).getJugPerdidos();
+			fila[1] = Ranking.get(i).getEntrenador();
+			fila[2] = Ranking.get(i).getJuegosGanados();
+			fila[3] = Ranking.get(i).getJuegosJugados();
+			fila[4] = Ranking.get(i).getJuegosPerdidos();
 			
-			int victorias = Ranking.get(i).getJugGanados();
-			int derrotas = Ranking.get(i).getJugPerdidos();
+			int victorias = Ranking.get(i).getJuegosJugados();
+			int derrotas = Ranking.get(i).getJuegosPerdidos();
 
 			if(victorias == 0 && derrotas == 0) {
 				fila[5] = "0 %";

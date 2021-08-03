@@ -94,9 +94,9 @@ public class HistorialLesiones extends JDialog {
 				panel.add(lblEquipo);
 			}
 			
-			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre());
-			lblEdad.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getEdad()));
-			lblPos.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getPosicion());
+			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getNombre());
+			lblEdad.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getEdad()));
+			lblPos.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getPosicion());
 			lblEquipo.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
 			{
 				lblNombre_1 = new JLabel("Nombre:");
@@ -145,12 +145,12 @@ public class HistorialLesiones extends JDialog {
 		
 		fila = new Object[model.getColumnCount()];
 		
-		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().size(); i++) {
-			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getTipoLesion();
-			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getAtendNombre();
-			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getDiasRec() + " Dias";
+		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().size(); i++) {
+			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getTipoLesion();
+			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getAtendNombre();
+			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getDiasRec() + " Dias";
 			
-			date = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getFechaLesion();
+			date = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getFechaLesion();
 			fecha = format.format(date);
 			
 			fila[3] = fecha;

@@ -77,12 +77,12 @@ public class ListPartidos extends JDialog {
 				btnEliminar.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(Administracion.getInstancia().getMisPartidos().size() != 0) {
-							int input = JOptionPane.showConfirmDialog(null, "¿Seguro que desea eliminar el partido?","Confirmación",JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+							int input = JOptionPane.showConfirmDialog(null, "ï¿½Seguro que desea eliminar el partido?","Confirmaciï¿½n",JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 							
 							if(input == 0 || Administracion.getInstancia().getMisPartidos().size() > 0) {
 								Administracion.getInstancia().getMisPartidos().remove(index);
 								Administracion.getInstancia().Guardar(Administracion.getInstancia());
-								JOptionPane.showMessageDialog(null, "El partido ha sido eliminado.","Información",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "El partido ha sido eliminado.","Informaciï¿½n",JOptionPane.INFORMATION_MESSAGE);
 								loadTable();
 							}
 						}
@@ -101,7 +101,7 @@ public class ListPartidos extends JDialog {
 								
 								indexLocal = Administracion.getInstancia().findEquipo(Administracion.getInstancia().getMisPartidos().get(index).getLocal().getNombre());
 								indexVis = Administracion.getInstancia().findEquipo(Administracion.getInstancia().getMisPartidos().get(index).getVisitante().getNombre());
-								if(Administracion.getInstancia().getMisEquipos().get(indexLocal).getJugadores().size() >= 9 && Administracion.getInstancia().getMisEquipos().get(indexVis).getJugadores().size() >= 9) {
+								if(Administracion.getInstancia().getMisEquipos().get(indexLocal).getMisJugadores().size() >= 9 && Administracion.getInstancia().getMisEquipos().get(indexVis).getMisJugadores().size() >= 9) {
 									if(Administracion.getInstancia().getMisPartidos().get(index).isEstado()) {
 										Simulacion sim = new Simulacion(indexLocal, indexVis, index);
 										sim.setModal(true);

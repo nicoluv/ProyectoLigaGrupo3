@@ -279,7 +279,13 @@ public class Inicio extends JFrame {
 		btnmtrJugadores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Administracion.getInstancia().getMisEquipos().size() != 0) {
-					ListJugadores lj = new ListJugadores();
+					ListJugadores lj = null;
+					try {
+						lj = new ListJugadores();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					lj.setModal(true);
 					lj.setVisible(true);
 				}

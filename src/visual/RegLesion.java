@@ -123,11 +123,11 @@ public class RegLesion extends JDialog {
 						if(!tipo.isEmpty() && !nombre.isEmpty() && !descrip.isEmpty()) {
 							Lesion les = new Lesion(tipo, aux, reposo, nombre, descrip);
 							Administracion.getInstancia().getMisEquipos().get(MiEquipo).setCantLesiones(+1);
-							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).setMiLesion(les);
-							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).AddLesion(les);
-							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).setEstado(false);
+							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).setMiLesion(les);
+							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).AddLesion(les);
+							Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).setEstado(false);
 							Administracion.getInstancia().Guardar(Administracion.getInstancia());
-							JOptionPane.showMessageDialog(null, "Se registró la lesión con éxito.","Información",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Se registrï¿½ la lesiï¿½n con ï¿½xito.","Informaciï¿½n",JOptionPane.INFORMATION_MESSAGE);
 							Administracion.getInstancia().Guardar(Administracion.getInstancia());
 							dispose();
 						}

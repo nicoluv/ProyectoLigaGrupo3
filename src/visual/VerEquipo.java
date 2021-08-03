@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -113,7 +114,13 @@ public class VerEquipo extends JDialog {
 			btnmtrModificar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if(table.getSelectedRow()>=0){
-						RegJugador regj = new RegJugador(index,MiEquipo,true);
+						RegJugador regj = null;
+						try {
+							regj = new RegJugador(index,MiEquipo,true);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						regj.setModal(true);
 						regj.setVisible(true);
 						loadTable();
@@ -140,7 +147,7 @@ public class VerEquipo extends JDialog {
 			btnmtrEliminar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(table.getSelectedRow()>=0) {
-						Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().remove(index);
+						Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().remove(index);
 						Administracion.getInstancia().Guardar(Administracion.getInstancia());
 						loadTable();
 					}
@@ -273,7 +280,7 @@ public class VerEquipo extends JDialog {
 			panel_4.add(lblCampeonatos);
 			
 			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
-			lblManager.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getManager());
+			lblManager.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getEntrenador());
 			lblEstadio.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getEstadio());
 			lblCampeonatos.setText((String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getCampeonatos())));
 			
@@ -351,9 +358,9 @@ public class VerEquipo extends JDialog {
 			lblWR.setBounds(565, 99, 85, 41);
 			PanelEstadistica.add(lblWR);
 			
-			lblJuegosGanados.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugGanados()));
-			lblJuegosPerdidos.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugPerdidos()));
-			labelJuegosJugados.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugJugados()));
+			lblJuegosGanados.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJuegosGanados()));
+			lblJuegosPerdidos.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJuegosPerdidos()));
+			labelJuegosJugados.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJuegosGanados()));
 			
 			float avg = AVGTotal();
 			
@@ -382,8 +389,8 @@ public class VerEquipo extends JDialog {
 			lblControlRoster.setBounds(744, 41, 112, 16);
 			panel.add(lblControlRoster);
 			
-			int victorias = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugGanados();
-			int derrotas = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugPerdidos();
+			int victorias = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJuegosGanados();
+			int derrotas = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJuegosPerdidos();
 
 			if(victorias == 0 && derrotas == 0) {
 				lblWR.setText("0 %");
@@ -421,26 +428,26 @@ public class VerEquipo extends JDialog {
 		model.setRowCount(0);
 		
 		fila = new Object[model.getColumnCount()];
-		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().size(); i++) {
-			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i).getNombre();
-			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i).getPosicion();
-			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i).getPaisOrigen();
-			fila[3] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i).getEdad();
+		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().size(); i++) {
+			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i).getNombre();
+			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i).getPosicion();
+			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i).getPaisOrigen();
+			fila[3] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i).getEdad();
 			
-			if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i).isEstado() == true) {
+			if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i).isEstado() == true) {
 				fila[4] =  "En forma";
 			}
 			else {
 				fila[4] = "Lesionado";
 			}
 			
-			if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i) instanceof JugCampo) {
-				int H = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i)).getEstad().getH();
-				int AB = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i)).getEstad().getAB();
+			if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i) instanceof JugCampo) {
+				int H = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i)).getEstad().getH();
+				int AB = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i)).getEstad().getAB();
 				
 				if(AB > 0 && H > 0) {
-					((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i)).getEstad().AVG(H, AB);
-					fila[5] = formatter.format(((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(i)).getEstad().getAVG());
+					((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i)).getEstad().AVG(H, AB);
+					fila[5] = formatter.format(((JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(i)).getEstad().getAVG());
 				}
 			}
 			else {
@@ -493,7 +500,7 @@ public class VerEquipo extends JDialog {
 	
 	public float AVGTotal() {
 		float suma = 0;
-		for (Jugador i : Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores()) {
+		for (Jugador i : Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores()) {
 			if(i instanceof JugCampo) {
 				suma += ((JugCampo) i).getEstad().getAVG();
 			}

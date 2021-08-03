@@ -86,7 +86,7 @@ public class GestionarLesiones extends JDialog {
 			panel.add(scrollPane);
 			
 			
-			String[] header = {"Nombre", "Posición", "Estado", "Tipo de lesion", "Dias de reposo"};
+			String[] header = {"Nombre", "Posiciï¿½n", "Estado", "Tipo de lesion", "Dias de reposo"};
 			model = new DefaultTableModel();
 			model.setColumnIdentifiers(header);
 			table = new JTable();
@@ -116,8 +116,8 @@ public class GestionarLesiones extends JDialog {
 			btnHistorialDeLesiones.setFont(new Font("Tahoma", Font.PLAIN, 11));
 			btnHistorialDeLesiones.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).getMisLesiones().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "El jugador nunca ha sufrido una lesión.");
+					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(index).getMisLesiones().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "El jugador nunca ha sufrido una lesiï¿½n.");
 					}
 					else {
 						HistorialLesiones HL = new HistorialLesiones(index, cbxEquipos.getSelectedIndex());
@@ -133,11 +133,11 @@ public class GestionarLesiones extends JDialog {
 			btnRecuperacion.setFont(new Font("Tahoma", Font.PLAIN, 11));
 			btnRecuperacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).isEstado() == false) {
-						int check = JOptionPane.showConfirmDialog(null, "¿El jugador se recuperó?", "Aviso", JOptionPane.WARNING_MESSAGE);
+					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(index).isEstado() == false) {
+						int check = JOptionPane.showConfirmDialog(null, "ï¿½El jugador se recuperï¿½?", "Aviso", JOptionPane.WARNING_MESSAGE);
 						if(check == JOptionPane.OK_OPTION) {
-							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).setMiLesion(null);
-							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).setEstado(true);
+							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(index).setMiLesion(null);
+							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(index).setEstado(true);
 							Administracion.getInstancia().Guardar(Administracion.getInstancia());
 							
 							loadtable();
@@ -155,8 +155,8 @@ public class GestionarLesiones extends JDialog {
 				btnRegistrarLesion.setFont(new Font("Tahoma", Font.PLAIN, 11));
 				btnRegistrarLesion.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).isEstado() == false) {
-							JOptionPane.showMessageDialog(null, "El jugador ya se encuentra lesionado.","Información",JOptionPane.INFORMATION_MESSAGE);
+						if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(index).isEstado() == false) {
+							JOptionPane.showMessageDialog(null, "El jugador ya se encuentra lesionado.","Informaciï¿½n",JOptionPane.INFORMATION_MESSAGE);
 						}
 						else {
 							RegLesion rl = new RegLesion(index, cbxEquipos.getSelectedIndex());
@@ -191,27 +191,27 @@ public class GestionarLesiones extends JDialog {
 		model.setRowCount(0);
 		
 		fila = new Object[model.getColumnCount()];
-			for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().size(); i++) {
-				fila[0] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getNombre();
-				fila[1] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getPosicion();
-				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).isEstado() == true) {
+			for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().size(); i++) {
+				fila[0] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getNombre();
+				fila[1] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getPosicion();
+				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).isEstado() == true) {
 					fila[2] = "En Forma";
 				}
 				else{
 					fila[2] = "Lesionado";
 				}
-				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getMiLesion() == null) {
+				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getMiLesion() == null) {
 					fila[3] = "Ninguna";
 				}
 				else {
-					fila[3] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getMiLesion().getTipoLesion();
+					fila[3] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getMiLesion().getTipoLesion();
 
 				}
-				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getMiLesion() == null ) {
+				if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getMiLesion() == null ) {
 					fila[4] = "Activo";
 				}
 				else {
-					fila[4] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(i).getMiLesion().getDiasRec();
+					fila[4] = Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getMisJugadores().get(i).getMiLesion().getDiasRec();
 
 				}
 				

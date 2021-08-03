@@ -88,7 +88,7 @@ public class CambiarPitcher extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						String nombre = (String) table.getValueAt(index, 0);
 						index = Administracion.getInstancia().findJugador(MiEquipo, nombre);
-						if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(index).isEstado()) {
+						if(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(index).isEstado()) {
 							dispose();
 						}
 						else {
@@ -118,7 +118,7 @@ public class CambiarPitcher extends JDialog {
 	public static void loadTable() {
 		model.setRowCount(0);
 		fila = new Object[model.getColumnCount()];
-		for (Jugador jug : Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores()) {
+		for (Jugador jug : Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores()) {
 			if(jug instanceof Pitcher) {
 				fila[0] = jug.getNombre();
 				fila[1] = jug.getNumero();

@@ -136,18 +136,18 @@ public class RegPartido extends JDialog {
 						visitante = Administracion.getInstancia().buscarEquipo(cbxVisitante.getSelectedItem().toString());
 						
 						if(fecha == null || hora.isEmpty() || local == null || visitante == null) {
-							JOptionPane.showMessageDialog(null, "Has dejado campos vacíos.","Aviso",JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Has dejado campos vacï¿½os.","Aviso",JOptionPane.WARNING_MESSAGE);
 						}
 						else {
 							int cont1 = 0,cont2 = 0;
 							
-							for (Jugador i : local.getJugadores()) {
+							for (Jugador i : local.getMisJugadores()) {
 								if(i.isEstado() == true) {
 									cont1++;
 								}
 							}
 							
-							for (Jugador i : visitante.getJugadores()) {
+							for (Jugador i : visitante.getMisJugadores()) {
 								if(i.isEstado() == true) {
 									cont2++;
 								}
@@ -158,7 +158,7 @@ public class RegPartido extends JDialog {
 								Partido p = new Partido(visitante,local,estadio,0,0,0,0,0,0,hora,fecha);
 								Administracion.getInstancia().getMisPartidos().add(p);
 								Administracion.getInstancia().Guardar(Administracion.getInstancia());
-								JOptionPane.showMessageDialog(null, "Se registró el partido con éxito.","Información",JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Se registrï¿½ el partido con ï¿½xito.","Informaciï¿½n",JOptionPane.INFORMATION_MESSAGE);
 							}
 							else {
 								JOptionPane.showMessageDialog(null, "Uno de los equipos no tiene jugadores activos suficientes.","Aviso",JOptionPane.WARNING_MESSAGE);

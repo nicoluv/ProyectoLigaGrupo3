@@ -175,9 +175,9 @@ public class VerJugador extends JDialog {
                 model = new DefaultTableModel();
                 String[] headerPitcher = {"Juegos Iniciados", "Hits", "Carreras", "Jonrones", "Ponches", "Carreras Limpias", "PromCL"};
                 String[] headerCampo = {"Al Bate", "Carreras", "Hits", "Errores", "2B", "Juegos Jugados", "AVG"};
-                if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof JugCampo) {
+                if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador) instanceof JugCampo) {
                     model.setColumnIdentifiers(headerCampo);
-                } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof Pitcher) {
+                } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador) instanceof Pitcher) {
                     model.setColumnIdentifiers(headerPitcher);
                 }
 
@@ -228,7 +228,7 @@ public class VerJugador extends JDialog {
             lblNumero.setBounds(349, 24, 55, 16);
             panel_1.add(lblNumero);
 
-            lblNumero.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNumero()));
+            lblNumero.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getNumero()));
 
             JLabel lblEstadisticasTemporadaRegular = new JLabel("Estadisticas Temporada Regular");
             lblEstadisticasTemporadaRegular.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -292,8 +292,8 @@ public class VerJugador extends JDialog {
         model.setRowCount(0);
         fila = new Object[model.getColumnCount()];
         NumberFormat formatter = new DecimalFormat(".###");
-        if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof JugCampo) {
-            JugCampo aux = (JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador);
+        if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador) instanceof JugCampo) {
+            JugCampo aux = (JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador);
             fila[0] = aux.getEstad().getAB();
             fila[1] = aux.getEstad().getD();
             fila[2] = aux.getEstad().getH();
@@ -309,8 +309,8 @@ public class VerJugador extends JDialog {
             }
 
             model.addRow(fila);
-        } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof Pitcher) {
-            Pitcher aux = (Pitcher) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador);
+        } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador) instanceof Pitcher) {
+            Pitcher aux = (Pitcher) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador);
             fila[0] = aux.getEstad().getJuegosIni();
             fila[1] = aux.getEstad().getHitsPitch();
             fila[2] = aux.getEstad().getCarrPitch();
