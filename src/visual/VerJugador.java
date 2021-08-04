@@ -162,6 +162,16 @@ public class VerJugador extends JDialog {
             lblLanza.setFont(new Font("Tahoma", Font.BOLD, 15));
             lblLanza.setBounds(382, 130, 100, 16);
             panel_1.add(lblLanza);
+            
+            JLabel lblNmero = new JLabel("N\u00FAmero:");
+            lblNmero.setFont(new Font("Tahoma", Font.BOLD, 15));
+            lblNmero.setBounds(275, 24, 79, 16);
+            panel_1.add(lblNmero);
+
+            lblNumero = new JLabel("");
+            lblNumero.setFont(new Font("Tahoma", Font.BOLD, 15));
+            lblNumero.setBounds(349, 24, 55, 16);
+            panel_1.add(lblNumero);
 
             JPanel panel_2 = new JPanel();
             panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -175,10 +185,20 @@ public class VerJugador extends JDialog {
                 model = new DefaultTableModel();
                 String[] headerPitcher = {"Juegos Iniciados", "Hits", "Carreras", "Jonrones", "Ponches", "Carreras Limpias", "PromCL"};
                 String[] headerCampo = {"Al Bate", "Carreras", "Hits", "Errores", "2B", "Juegos Jugados", "AVG"};
-                if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof JugCampo) {
-                    model.setColumnIdentifiers(headerCampo);
-                } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof Pitcher) {
-                    model.setColumnIdentifiers(headerPitcher);
+                try {
+                    Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+                    Statement st = db.createStatement();
+                    ResultSet rs;
+                    rs = st.executeQuery("SELECT codigo_posc FROM Jugador WHERE codigo_Jugador = " + MiJugador + "");
+                    while (rs.next()) {
+                        if (rs.getInt("codigo_posc") == 8) {
+                            model.setColumnIdentifiers(headerPitcher);
+                        } else {
+                            model.setColumnIdentifiers(headerCampo);
+                        }
+                    }
+                } catch (SQLException a) {
+                    System.out.println("Error " + a.getMessage());
                 }
 
                 table = new JTable();
@@ -196,8 +216,6 @@ public class VerJugador extends JDialog {
 
                 while (rs.next()) {
                     String fname = rs.getString("nombre");
-                    Date ffecha = rs.getDate("fecha_nacimento");
-                    int fpeso = rs.getInt("peso");
                     String fbat = rs.getString("bateo");
                     String flaz = rs.getString("lanzamiento");
                     String fpais = rs.getString("pais");
@@ -218,17 +236,9 @@ public class VerJugador extends JDialog {
                 System.out.println("Error " + a.getMessage());
             }
 
-            JLabel lblNmero = new JLabel("N\u00FAmero:");
-            lblNmero.setFont(new Font("Tahoma", Font.BOLD, 15));
-            lblNmero.setBounds(275, 24, 79, 16);
-            panel_1.add(lblNmero);
+            
 
-            lblNumero = new JLabel("");
-            lblNumero.setFont(new Font("Tahoma", Font.BOLD, 15));
-            lblNumero.setBounds(349, 24, 55, 16);
-            panel_1.add(lblNumero);
-
-            lblNumero.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNumero()));
+            
 
             JLabel lblEstadisticasTemporadaRegular = new JLabel("Estadisticas Temporada Regular");
             lblEstadisticasTemporadaRegular.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -292,40 +302,59 @@ public class VerJugador extends JDialog {
         model.setRowCount(0);
         fila = new Object[model.getColumnCount()];
         NumberFormat formatter = new DecimalFormat(".###");
-        if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof JugCampo) {
-            JugCampo aux = (JugCampo) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador);
-            fila[0] = aux.getEstad().getAB();
-            fila[1] = aux.getEstad().getD();
-            fila[2] = aux.getEstad().getH();
-            fila[3] = aux.getEstad().getErrores();
-            fila[4] = aux.getEstad().getDobles();
-            fila[5] = aux.getEstad().getJuegosJug();
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT codigo_posc FROM Jugador WHERE codigo_Jugador = " + MiJugador + "");
+            while (rs.next()) {
+                if (rs.getInt("codigo_posc") == 8) {
+                    Statement sts = db.createStatement();
+                    ResultSet rss;
+                    rss = sts.executeQuery("SELECT * FROM EstadisticaPitcher WHERE codigo_jugador = " + MiJugador + "");
+                    while (rss.next()) {
+                        int fh = rss.getInt("H");
+                        int fd = rss.getInt("D");
+                        int fcl = rss.getInt("CL");
+                        int fbb = rss.getInt("BB");
+                        int fhr = rss.getInt("HR");
+                        int fso = rss.getInt("SO");
+                        fila[0] = fh;
+                        fila[1] = fd;
+                        fila[2] = fcl;
+                        fila[3] = fbb;
+                        fila[4] = fhr;
+                        fila[5] = fso;
+                        fila[6] = fso;
 
-            if (aux.getEstad().getAB() > 0 && aux.getEstad().getH() > 0) {
-                aux.getEstad().AVG(aux.getEstad().getH(), aux.getEstad().getAB());
-                fila[6] = formatter.format(aux.getEstad().getAVG());
-            } else {
-                fila[6] = 0;
+                        model.addRow(fila);
+                    }
+
+                } else {
+                    Statement sts = db.createStatement();
+                    ResultSet rss;
+                    rss = sts.executeQuery("SELECT * FROM Estadistica WHERE codigo_jugador = " + MiJugador + "");
+                    while (rss.next()) {
+                        int fh = rss.getInt("AB");
+                        int fd = rss.getInt("D");
+                        int fcl = rss.getInt("H");
+                        int fbb = rss.getInt("DOSB");
+                        int fhr = rss.getInt("TRESB");
+                        int fso = rss.getInt("bb");
+                        fila[0] = fh;
+                        fila[1] = fd;
+                        fila[2] = fcl;
+                        fila[3] = fbb;
+                        fila[4] = fhr;
+                        fila[5] = fso;
+                        fila[6] = fso;
+
+                        model.addRow(fila);
+                    }
+                }
             }
-
-            model.addRow(fila);
-        } else if (Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador) instanceof Pitcher) {
-            Pitcher aux = (Pitcher) Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador);
-            fila[0] = aux.getEstad().getJuegosIni();
-            fila[1] = aux.getEstad().getHitsPitch();
-            fila[2] = aux.getEstad().getCarrPitch();
-            fila[3] = aux.getEstad().getJonronPitch();
-            fila[4] = aux.getEstad().getPonches();
-            fila[5] = aux.getEstad().getCarrLimpias();
-
-            if (aux.getEstad().getEntradasJugadas() > 0 && aux.getEstad().getCarrLimpias() > 0) {
-                aux.getEstad().PromCL();
-                fila[6] = formatter.format(aux.getEstad().getPromCL());
-            } else {
-                fila[6] = 0;
-            }
-
-            model.addRow(fila);
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
         }
 
         //File imgjug = new File("imgjugadores/" + Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre() + ".png");

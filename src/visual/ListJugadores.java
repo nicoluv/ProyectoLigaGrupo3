@@ -72,7 +72,7 @@ public class ListJugadores extends JDialog {
             scrollPane.setBounds(10, 50, 871, 380);
             panel.add(scrollPane);
 
-            String[] header = {"Codigo","Nombre", "Posici�n", "Pais de Origen", "Altura"};
+            String[] header = {"Codigo", "Nombre", "Posici�n", "Pais de Origen", "Altura"};
             model = new DefaultTableModel();
             model.setColumnIdentifiers(header);
             table = new JTable();
@@ -109,14 +109,14 @@ public class ListJugadores extends JDialog {
             }
             cbxEquipos.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    loadTable(cbxEquipos.getSelectedIndex() + 1);
+                    loadTable(cod_eq(cbxEquipos.getSelectedItem().toString()));
                 }
             });
             cbxEquipos.setFont(new Font("Tahoma", Font.PLAIN, 11));
             cbxEquipos.setBounds(124, 14, 156, 25);
             panel.add(cbxEquipos);
 
-            loadTable(cbxEquipos.getSelectedIndex() + 1);
+            loadTable(cod_eq(cbxEquipos.getSelectedItem().toString()));
         }
         {
             JPanel buttonPane = new JPanel();
@@ -127,10 +127,11 @@ public class ListJugadores extends JDialog {
                 btnVerJugador.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         int p = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+               
                         VerJugador vj = new VerJugador(p, cbxEquipos.getSelectedIndex());
                         vj.setModal(true);
                         vj.setVisible(true);
-                        loadTable(cbxEquipos.getSelectedIndex() + 1);
+                        loadTable(cod_eq(cbxEquipos.getSelectedItem().toString()));
                     }
                 });
 
@@ -146,15 +147,17 @@ public class ListJugadores extends JDialog {
                                 ResultSet rs;
 
                                 JOptionPane.showMessageDialog(null, "El jugador ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-            
+
                                 PreparedStatement ts = db.prepareStatement("DELETE FROM Jugador WHERE nombre = ?");
-                                ts.setString(1, table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
+                                ts.setString(1, table.getValueAt(table.getSelectedRow(), 1).toString());
                                 ts.executeQuery();
-                                loadTable(cbxEquipos.getSelectedIndex() + 1);
+                                //System.out.println(table.getValueAt(table.getSelectedRow(), 1).toString());
+
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());
                             }
-                            
+                            loadTable(cod_eq(cbxEquipos.getSelectedItem().toString()));
+
                         }
                     }
                 });
@@ -180,10 +183,26 @@ public class ListJugadores extends JDialog {
             }
         }
     }
+    
+    public int cod_eq(String s) {
+        int fcod = 0;
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT codigo_equipo FROM Equipo WHERE nombre_equipo = '" + s + "'");
+            while (rs.next()) {
+                fcod = rs.getInt("codigo_equipo");
+            }
+
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+        return fcod;
+    }
 
     public static void loadTable(int s) {
         model.setRowCount(0);
-        System.out.println(s);
         fila = new Object[model.getColumnCount()];
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
