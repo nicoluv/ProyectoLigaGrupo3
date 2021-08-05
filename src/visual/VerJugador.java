@@ -328,10 +328,10 @@ public class VerJugador extends JDialog {
                         int fbb = rss.getInt("BB");
                         int fhr = rss.getInt("HR");
                         int fso = rss.getInt("SO");
-                        fila[0] = fh;
+                        fila[0] = fcl;
                         fila[1] = fd;
-                        fila[2] = fcl;
-                        fila[3] = fbb;
+                        fila[2] = fbb;
+                        fila[3] = fh;
                         fila[4] = fhr;
                         fila[5] = fso;
                         fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;
@@ -352,8 +352,8 @@ public class VerJugador extends JDialog {
                         int fso = rss.getInt("bb");
                         fila[0] = fh;
                         fila[1] = fd;
-                        fila[2] = fcl;
-                        fila[3] = fbb;
+                        fila[2] = fbb;
+                        fila[3] = fcl;
                         fila[4] = fhr;
                         fila[5] = fso;
                         fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;

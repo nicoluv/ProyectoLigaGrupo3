@@ -35,9 +35,12 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static visual.ListJugadores.fila;
 import static visual.ListJugadores.model;
 
@@ -513,9 +516,21 @@ public class Simulacion extends JDialog {
             btnHit.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (TableCampoLocal.getSelectedRow() >= 0 || TableCampoVisitante.getSelectedRow() >= 0) {
-                        ActualizarHits();
-                        ActualizarHitsPitcher();
-                        ActualizarAB();
+                        try {
+                            ActualizarHits();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            ActualizarHitsPitcher();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        try {
+                            ActualizarAB();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         if (EntradaAux % 2 == 0) {
                             HitsTotalLocales++;
                             LoadCampoLocal();
@@ -539,23 +554,27 @@ public class Simulacion extends JDialog {
             btnCarrera.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (TableCampoLocal.getSelectedRow() >= 0 || TableCampoVisitante.getSelectedRow() >= 0) {
-                        Carreras++;
-                        ActualizarCarreras();
-                        ActualizarCarrerasPitcher();
-                        ActualizarAB();
-                        ActualizarCarrerasLimpias();
-                        if (EntradaAux % 2 == 0) {
-                            HitsTotalLocales++;
-                            CarrerasTotalesLocal++;
-                            LoadCampoLocal();
-                            LoadPitcherVisitante();
-                        } else {
-                            HitsTotalVisitantes++;
-                            CarrerasTotalesVisitante++;
-                            LoadCampoVisitante();
-                            LoadPitcherLocal();
+                        try {
+                            Carreras++;
+                            ActualizarCarreras();
+                            ActualizarCarrerasPitcher();
+                            ActualizarAB();
+                            ActualizarCarrerasLimpias();
+                            if (EntradaAux % 2 == 0) {
+                                HitsTotalLocales++;
+                                CarrerasTotalesLocal++;
+                                LoadCampoLocal();
+                                LoadPitcherVisitante();
+                            } else {
+                                HitsTotalVisitantes++;
+                                CarrerasTotalesVisitante++;
+                                LoadCampoVisitante();
+                                LoadPitcherLocal();
+                            }
+                            ActualizarTablero();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        ActualizarTablero();
                     } else {
                         JOptionPane.showMessageDialog(null, "No ha seleccionado un jugador.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -569,25 +588,29 @@ public class Simulacion extends JDialog {
             btnHomerun.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (TableCampoLocal.getSelectedRow() >= 0 || TableCampoVisitante.getSelectedRow() >= 0) {
-                        Carreras++;
-                        ActualizarJonrones();
-                        ActualizarCarreras();
-                        ActualizarCarrerasPitcher();
-                        ActualizarJonronesPitcher();
-                        ActualizarAB();
-                        ActualizarCarrerasLimpias();
-                        if (EntradaAux % 2 == 0) {
-                            HitsTotalLocales++;
-                            CarrerasTotalesLocal++;
-                            LoadCampoLocal();
-                            LoadPitcherVisitante();
-                        } else {
-                            HitsTotalVisitantes++;
-                            CarrerasTotalesVisitante++;
-                            LoadCampoVisitante();
-                            LoadPitcherLocal();
+                        try {
+                            Carreras++;
+                            ActualizarJonrones();
+                            ActualizarCarreras();
+                            ActualizarCarrerasPitcher();
+                            ActualizarJonronesPitcher();
+                            ActualizarAB();
+                            ActualizarCarrerasLimpias();
+                            if (EntradaAux % 2 == 0) {
+                                HitsTotalLocales++;
+                                CarrerasTotalesLocal++;
+                                LoadCampoLocal();
+                                LoadPitcherVisitante();
+                            } else {
+                                HitsTotalVisitantes++;
+                                CarrerasTotalesVisitante++;
+                                LoadCampoVisitante();
+                                LoadPitcherLocal();
+                            }
+                            ActualizarTablero();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        ActualizarTablero();
                     } else {
                         JOptionPane.showMessageDialog(null, "No has seleccionado un jugador.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -601,17 +624,21 @@ public class Simulacion extends JDialog {
             btnError.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (TableCampoLocal.getSelectedRow() >= 0 || TableCampoVisitante.getSelectedRow() >= 0) {
-                        ActualizarErrores();
-                        if (EntradaAux % 2 == 0) {
-                            ErroresTotalLocal++;
-                            LoadCampoLocal();
-                            LoadPitcherVisitante();
-                        } else {
-                            ErroresTotalVisitante++;
-                            LoadCampoVisitante();
-                            LoadPitcherLocal();
+                        try {
+                            ActualizarErrores();
+                            if (EntradaAux % 2 == 0) {
+                                ErroresTotalLocal++;
+                                LoadCampoLocal();
+                                LoadPitcherVisitante();
+                            } else {
+                                ErroresTotalVisitante++;
+                                LoadCampoVisitante();
+                                LoadPitcherLocal();
+                            }
+                            ActualizarTablero();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Simulacion.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        ActualizarTablero();
                     } else {
                         JOptionPane.showMessageDialog(null, "No has seleccionado un jugador.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -892,11 +919,11 @@ public class Simulacion extends JDialog {
         File imgjug2 = new File("imgequipos/" + Administracion.getInstancia().getMisEquipos().get(Visitante).getNombre() + ".png");
 
         if (imgjug.exists()) {
-        //    rsscalelabel.RSScaleLabel.setScaleLabel(LabelLogoLocal, imgjug.toString());
+            //    rsscalelabel.RSScaleLabel.setScaleLabel(LabelLogoLocal, imgjug.toString());
         }
 
         if (imgjug2.exists()) {
-          //  rsscalelabel.RSScaleLabel.setScaleLabel(labelLogoVisitante, imgjug2.toString());
+            //  rsscalelabel.RSScaleLabel.setScaleLabel(labelLogoVisitante, imgjug2.toString());
         }
     }
 
@@ -967,7 +994,7 @@ public class Simulacion extends JDialog {
     }
 
     protected void ActualizarEntradasPitcher() {
-        if (EntradaAux % 2 != 0) {
+       /* if (EntradaAux % 2 != 0) {
             String aux = (String) TablePitcherLocal.getValueAt(0, 0);
             int help = Administracion.getInstancia().findJugador(Local, aux);
             int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getEntradasJugadas();
@@ -977,126 +1004,162 @@ public class Simulacion extends JDialog {
             int help = Administracion.getInstancia().findJugador(Visitante, aux);
             int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getEntradasJugadas();
             ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setEntradasJugadas(help2 + 1);
-        }
+        }*/
     }
 
-    protected void ActualizarHitsPitcher() {
-        if (EntradaAux % 2 != 0) {
-            String aux = (String) TablePitcherLocal.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getHitsPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
-        } else if (EntradaAux % 2 == 0) {
-            String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getHitsPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setHitsPitch(help2 + 1);
-        }
-    }
-
-    protected void ActualizarCarrerasPitcher() {
-        if (EntradaAux % 2 != 0) {
-            String aux = (String) TablePitcherLocal.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getCarrPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
-        } else if (EntradaAux % 2 == 0) {
-            String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getCarrPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setCarrPitch(help2 + 1);
-        }
-    }
-
-    protected void ActualizarJonronesPitcher() {
-        if (EntradaAux % 2 != 0) {
-            String aux = (String) TablePitcherLocal.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getJonronPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
-        } else if (EntradaAux % 2 == 0) {
-            String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getJonronPitch();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
-        }
-    }
-
-    protected void ActualizarCarrerasLimpias() {
-        if (EntradaAux % 2 != 0) {
-            String aux = (String) TablePitcherLocal.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getCarrLimpias();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);;
-        } else if (EntradaAux % 2 == 0) {
-            String aux = (String) TablePitcherVisitante.getValueAt(0, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getCarrLimpias();
-            ((Pitcher) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setJonronPitch(help2 + 1);
-        }
-    }
-
-    protected void ActualizarAB() {
-
+    protected void ActualizarHitsPitcher() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
         if (EntradaAux % 2 == 0) {
-            String aux = (String) TableCampoLocal.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getAB();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setH(help2 + 1);
-
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET D = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
         } else if (EntradaAux % 2 != 0) {
-            String aux = (String) TableCampoVisitante.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getAB();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setH(help2 + 1);
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET D = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        }
+    }
+
+    protected void ActualizarCarrerasPitcher() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        if (EntradaAux % 2 == 0) {
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET CL = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        } else if (EntradaAux % 2 != 0) {
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET CL = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        }
+    }
+
+    protected void ActualizarJonronesPitcher() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        if (EntradaAux % 2 == 0) {
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET HR = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_local = ? FROM partido WHERE Partido.codigo_equipoLocal = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Local);
+            ts.executeUpdate();
+        } else if (EntradaAux % 2 != 0) {
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET HR = ? FROM EstadisticaPitcher WHERE EstadisticaPitcher.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_visitante = ? FROM partido WHERE Partido.codigo_equipoVisitante = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Visitante);
+            ts.executeUpdate();
+        }
+    }
+
+    protected void ActualizarCarrerasLimpias() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        if (EntradaAux % 2 == 0) {
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET BB = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        } else if (EntradaAux % 2 != 0) {
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET BB = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        }
+    }
+
+    protected void ActualizarAB() throws SQLException {
+
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        if (EntradaAux % 2 == 0) {
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET AB = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        } else if (EntradaAux % 2 != 0) {
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET AB = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
         }
 
     }
 
-    protected void ActualizarHits() {
+    protected void ActualizarHits() throws SQLException {
 
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
         if (EntradaAux % 2 == 0) {
-            String aux = (String) TableCampoLocal.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getH();
-
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setH(help2 + 1);
-
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET D = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
         } else if (EntradaAux % 2 != 0) {
-            String aux = (String) TableCampoVisitante.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getH();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setH(help2 + 1);
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET D = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+        }
+    }
+
+    protected void ActualizarCarreras() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        if (EntradaAux % 2 == 0) {
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_local = ? FROM partido WHERE Partido.codigo_equipoLocal = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Local);
+            ts.executeUpdate();
+        } else if (EntradaAux % 2 != 0) {
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_visitante = ? FROM partido WHERE Partido.codigo_equipoVisitante = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Visitante);
+            ts.executeUpdate();
         }
 
     }
 
-    protected void ActualizarCarreras() {
+    protected void ActualizarJonrones() throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
         if (EntradaAux % 2 == 0) {
-            String aux = (String) TableCampoLocal.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getD();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setD(help2 + 1);
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET HR = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_local = ? FROM partido WHERE Partido.codigo_equipoLocal = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Local);
+            ts.executeUpdate();
         } else if (EntradaAux % 2 != 0) {
-            String aux = (String) TableCampoVisitante.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getD();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setD(help2 + 1);
-        }
-
-    }
-
-    protected void ActualizarJonrones() {
-        if (EntradaAux % 2 == 0) {
-            String aux = (String) TableCampoLocal.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getHR();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setHR(help2 + 1);
-        } else if (EntradaAux % 2 != 0) {
-            String aux = (String) TableCampoVisitante.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getHR();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setHR(help2 + 1);
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET HR = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
+            PreparedStatement ts = db.prepareStatement("UPDATE Partido SET carrera_visitante = ? FROM partido WHERE Partido.codigo_equipoVisitante = ?");
+            ts.setInt(1, Integer.parseInt(TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 1).toString()) + 1);
+            ts.setInt(2, Visitante);
+            ts.executeUpdate();
         }
 
     }
@@ -1104,16 +1167,17 @@ public class Simulacion extends JDialog {
     protected void ActualizarErrores() throws SQLException {
         Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
         if (EntradaAux % 2 == 0) {
-            String aux = (String) TableCampoLocal.getValueAt(index, 0);
-            
-            int help = Administracion.getInstancia().findJugador(Local, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().getErrores();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Local).getJugadores().get(help)).getEstad().setErrores(help2 + 1);
+            int aux = cod_jug((String) TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET H = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, Integer.parseInt(TableCampoLocal.getValueAt(TableCampoLocal.getSelectedRow(), 2).toString()) + 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
         } else if (EntradaAux % 2 != 0) {
-            String aux = (String) TableCampoVisitante.getValueAt(index, 0);
-            int help = Administracion.getInstancia().findJugador(Visitante, aux);
-            int help2 = ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().getErrores();
-            ((JugCampo) Administracion.getInstancia().getMisEquipos().get(Visitante).getJugadores().get(help)).getEstad().setErrores(help2 + 1);
+            int aux = cod_jug((String) TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 0));
+            PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET H = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
+            sts.setInt(1, Integer.parseInt(TableCampoVisitante.getValueAt(TableCampoVisitante.getSelectedRow(), 2).toString()) + 1);
+            sts.setInt(2, aux);
+            sts.executeUpdate();
         }
 
     }
@@ -1125,10 +1189,10 @@ public class Simulacion extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica, Equipo WHERE Jugador.codigo_jugador = Estadistica.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Jugador.codigo_equipo = " + Local + "");
+            rs = st.executeQuery("SELECT Jugador.*, Estadistica.*, Partido.carrera_local FROM Jugador, Estadistica, Equipo, Partido WHERE Jugador.codigo_jugador = Estadistica.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Partido.codigo_equipoLocal = Equipo.codigo_equipo AND Partido.codigo_equipoLocal = Jugador.codigo_equipo AND Jugador.codigo_equipo = " + Local + "");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
-                int fd = rs.getInt("D");
+                int fd = rs.getInt("carrera_local");
                 int fh = rs.getInt("H");
                 fila[0] = fname;
                 fila[1] = fd;
@@ -1147,10 +1211,10 @@ public class Simulacion extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica, Equipo WHERE Jugador.codigo_jugador = Estadistica.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Jugador.codigo_equipo = " + Visitante + "");
+            rs = st.executeQuery("SELECT Jugador.*, Estadistica.*, Partido.carrera_visitante FROM Jugador, Estadistica, Equipo, Partido WHERE Jugador.codigo_jugador = Estadistica.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Partido.codigo_equipoVisitante = Equipo.codigo_equipo AND Partido.codigo_equipoVisitante = Jugador.codigo_equipo AND Jugador.codigo_equipo =  " + Visitante + "");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
-                int fd = rs.getInt("D");
+                int fd = rs.getInt("carrera_visitante");
                 int fh = rs.getInt("H");
                 fila[0] = fname;
                 fila[1] = fd;
@@ -1169,11 +1233,11 @@ public class Simulacion extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher, Equipo WHERE Jugador.codigo_jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Jugador.codigo_equipo = " + Local + "");
+            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.*, Partido.carrera_local FROM Jugador, EstadisticaPitcher, Equipo, Partido WHERE Jugador.codigo_jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Partido.codigo_equipoLocal = Equipo.codigo_equipo AND Partido.codigo_equipoLocal = Jugador.codigo_equipo AND Jugador.codigo_equipo =  " + Local + "");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
                 int fhr = rs.getInt("HR");
-                int fcl = rs.getInt("CL");
+                int fcl = rs.getInt("carrera_local");
                 fila[0] = fname;
                 fila[1] = fcl;
                 fila[2] = fhr;;
@@ -1185,6 +1249,23 @@ public class Simulacion extends JDialog {
 
     }
 
+    public int cod_jug(String s) {
+        int fcod = 0;
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT codigo_Jugador FROM Jugador WHERE nombre = '" + s + "'");
+            while (rs.next()) {
+                fcod = rs.getInt("codigo_Jugador");
+            }
+
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+        return fcod;
+    }
+
     public static void LoadPitcherVisitante() {
         modelPitcherVisitante.setRowCount(0);
         fila = new Object[modelPitcherVisitante.getColumnCount()];
@@ -1192,12 +1273,12 @@ public class Simulacion extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher, Equipo WHERE Jugador.codigo_jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Jugador.codigo_equipo = " + Visitante + "");
+            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.*, Partido.carrera_visitante FROM Jugador, EstadisticaPitcher, Equipo, Partido WHERE Jugador.codigo_jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_equipo = Equipo.codigo_equipo AND Partido.codigo_equipoVisitante = Equipo.codigo_equipo AND Partido.codigo_equipoVisitante = Jugador.codigo_equipo AND Jugador.codigo_equipo =  " + Visitante + "");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
                 String fpais = rs.getString("pais");
                 int fhr = rs.getInt("HR");
-                int fcl = rs.getInt("CL");
+                int fcl = rs.getInt("carrera_visitante");
                 fila[0] = fname;
                 fila[1] = fcl;
                 fila[2] = fhr;;

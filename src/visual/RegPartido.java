@@ -158,7 +158,7 @@ public class RegPartido extends JDialog {
                             //fecha = dateChooser.getDate();
                             hora = cbxHora.getSelectedItem().toString();
                             JOptionPane.showMessageDialog(null, "Se ha creado el partido correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                            PreparedStatement ts = db.prepareStatement("INSERT INTO Partido(codigo_equipoLocal, codigo_equipoVisitante, estado, hora, fecha_partido) VALUES (?,?,?,?,?)");
+                            PreparedStatement ts = db.prepareStatement("INSERT INTO Partido(codigo_equipoLocal, codigo_equipoVisitante, estado, hora, fecha_partido, carrera_local, carrera_visitante) VALUES (?,?,?,?,?,0,0)");
                             ts.setInt(1, Local);
                             ts.setInt(2, Visita);
                             ts.setString(3, estado);
