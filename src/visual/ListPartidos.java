@@ -26,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -56,7 +57,7 @@ public class ListPartidos extends JDialog {
             contentPanel.add(scrollPane, BorderLayout.CENTER);
             {
 
-                String[] header = {"Local", "Visitante", "Estadio", "Hora", "Fecha", "Estado", "Marcador", "Ganador"};
+                String[] header = {"Cod","Local", "Visitante", "Estadio", "Hora", "Fecha", "Estado", "Marcador", "Ganador"};
                 model = new DefaultTableModel();
                 model.setColumnIdentifiers(header);
                 table = new JTable();
@@ -83,17 +84,26 @@ public class ListPartidos extends JDialog {
                 btnEliminar.setEnabled(false);
                 btnEliminar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (Administracion.getInstancia().getMisPartidos().size() != 0) {
-                            int input = JOptionPane.showConfirmDialog(null, "�Seguro que desea eliminar el partido?", "Confirmaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        int input = JOptionPane.showConfirmDialog(null, "�Seguro que desea eliminar el jugador?", "Confirmaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
-                            if (input == 0 || Administracion.getInstancia().getMisPartidos().size() > 0) {
-                                Administracion.getInstancia().getMisPartidos().remove(index);
-                                Administracion.getInstancia().Guardar(Administracion.getInstancia());
-                                JOptionPane.showMessageDialog(null, "El partido ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                loadTable();
+                        if (input == 0) {
+                            try {
+                                Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+                                Statement st = db.createStatement();
+                                ResultSet rs;
+
+                                JOptionPane.showMessageDialog(null, "El jugador ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
+
+                                PreparedStatement ts = db.prepareStatement("DELETE FROM Partido WHERE codigo_partido = ?");
+                                ts.setInt(1, Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
+                                ts.executeQuery();
+                                //System.out.println(table.getValueAt(table.getSelectedRow(), 1).toString());
+
+                            } catch (SQLException a) {
+                                System.out.println("Error " + a.getMessage());
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No has seleccionado un partido.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                            loadTable();
+
                         }
                     }
                 });
@@ -102,29 +112,12 @@ public class ListPartidos extends JDialog {
                     btnJugarPartido.setEnabled(false);
                     btnJugarPartido.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            if (Administracion.getInstancia().getMisPartidos().size() > 0) {
-                                int indexLocal, indexVis;
-
-                                indexLocal = Administracion.getInstancia().findEquipo(Administracion.getInstancia().getMisPartidos().get(index).getLocal().getNombre());
-                                indexVis = Administracion.getInstancia().findEquipo(Administracion.getInstancia().getMisPartidos().get(index).getVisitante().getNombre());
-                                if (Administracion.getInstancia().getMisEquipos().get(indexLocal).getJugadores().size() >= 9 && Administracion.getInstancia().getMisEquipos().get(indexVis).getJugadores().size() >= 9) {
-                                    if (Administracion.getInstancia().getMisPartidos().get(index).isEstado()) {
-                                        Simulacion sim = new Simulacion(indexLocal, indexVis, index);
+                            Simulacion sim = new Simulacion(cod_eq(table.getValueAt(table.getSelectedRow(), 1).toString()), cod_eq(table.getValueAt(table.getSelectedRow(), 2).toString()), index);
                                         sim.setModal(true);
                                         sim.setVisible(true);
                                         Administracion.getInstancia().getMisPartidos().get(index).setEstado(false);
                                         loadTable();
-                                    } else {
-                                        JOptionPane.showMessageDialog(null, "El partido ya se jugo.", "Aviso", JOptionPane.WARNING_MESSAGE);
-
-                                    }
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Necesita un minimo de 9 jugadores en cada equipo", "Aviso", JOptionPane.WARNING_MESSAGE);
-                                }
-
-                            } else {
-                                JOptionPane.showMessageDialog(null, "No has seleccionado un partido.", "Aviso", JOptionPane.WARNING_MESSAGE);
-                            }
+                                   
                         }
                     });
                     btnJugarPartido.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -149,7 +142,24 @@ public class ListPartidos extends JDialog {
         }
     }
 
-    public String estadi(String s) {
+    public int cod_eq(String s) {
+        int fcod = 0;
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT codigo_equipo FROM Equipo WHERE nombre_equipo = '" + s + "'");
+            while (rs.next()) {
+                fcod = rs.getInt("codigo_equipo");
+            }
+
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+        return fcod;
+    }
+    
+    public static String estadi(String s) {
         String fcod = null;
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
@@ -165,65 +175,39 @@ public class ListPartidos extends JDialog {
         }
         return fcod;
     }
+    
 
-    public static void loadTable() {
+        public static void loadTable() {
         model.setRowCount(0);
-        Date date;
-        String fecha;
-
         fila = new Object[model.getColumnCount()];
-        
+
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT * FROM Partido WHERE Jugador.codigo_posc = Posicion.codigo_posc AND Jugador.codigo_equipo = '" + s + "'");
+            rs = st.executeQuery("SELECT Partido.*, Equipolo.nombre_equipo as EL, Equipovi.nombre_equipo as EV  FROM Partido, Equipo as Equipolo, Equipo as Equipovi WHERE Equipolo.codigo_equipo = Partido.codigo_equipoLocal AND Equipovi.codigo_equipo = Partido.codigo_equipoVisitante");
             while (rs.next()) {
-                String fcodigo = rs.getString("codigo_Jugador");
-                String fname = rs.getString("nombre");
-                String fpais = rs.getString("pais");
-                int faltura = rs.getInt("altura");
-                String fpos = rs.getString("descripcion");
+                int fcodigo = rs.getInt("codigo_partido");
+                String fname1 = rs.getString("EL");
+                String fname2 = rs.getString("EV");
+                String festadio = estadi(fname1);
+                String fhora= rs.getString("hora");
+                String festado = rs.getString("estado");
+                String ffecha = rs.getDate("fecha_partido").toString();
                 fila[0] = fcodigo;
-                fila[1] = fname;
-                fila[2] = fpos;
-                fila[3] = fpais;
-                fila[4] = faltura;
+                fila[1] = fname1;
+                fila[2] = fname2;
+                fila[3] = festadio;
+                fila[4] = fhora;
+                fila[5] = ffecha;
+                fila[6] = festado;
+                fila[7] = "0 - 0";
+                fila[8] = "Por Definir";
 
                 model.addRow(fila);
             }
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());
-        }
-
-        for (int i = 0; i < Administracion.getInstancia().getMisPartidos().size(); i++) {
-            fila[0] = Administracion.getInstancia().getMisPartidos().get(i).getLocal().getNombre();
-            fila[1] = Administracion.getInstancia().getMisPartidos().get(i).getVisitante().getNombre();
-            fila[2] = Administracion.getInstancia().getMisPartidos().get(i).getEstadio();
-            fila[3] = Administracion.getInstancia().getMisPartidos().get(i).getHora();
-
-            date = Administracion.getInstancia().getMisPartidos().get(i).getFecha();
-            fecha = format.format(date);
-
-            fila[4] = fecha;
-            if (Administracion.getInstancia().getMisPartidos().get(i).isEstado() == true) {
-                fila[5] = "Pendiente";
-            } else {
-                fila[5] = "Finalizado";
-            }
-            if (Administracion.getInstancia().getMisPartidos().get(i).isEstado() == true) {
-                fila[6] = "0 - 0";
-            } else {
-                fila[6] = Administracion.getInstancia().getMisPartidos().get(i).getCarrLoc() + " - " + Administracion.getInstancia().getMisPartidos().get(i).getCarrVis();
-
-            }
-            if (Administracion.getInstancia().getMisPartidos().get(i).isEstado() == true) {
-                fila[7] = "Por Definir";
-            } else {
-                fila[7] = Administracion.getInstancia().getMisPartidos().get(i).getGanador();
-            }
-
-            model.addRow(fila);
         }
 
     }

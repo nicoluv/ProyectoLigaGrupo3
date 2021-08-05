@@ -101,6 +101,7 @@ public class RegJugador extends JDialog {
 
         if (mod == true) {
             setTitle("Modificar jugador");
+
         } else {
             setTitle("Registrar jugador");
         }
@@ -548,7 +549,7 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_pitcher(H_Pitch, D_Pitch, CL, BB_Pitch, HR_Pitch, SO_Pitch);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "')");
+                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
 
                                 }
                             } catch (SQLException a) {
@@ -574,7 +575,7 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_campo(AB, D, H, HR, doble, triple, BB, SO);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "')");
+                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
 
                                 }
                             } catch (SQLException a) {
@@ -603,7 +604,7 @@ public class RegJugador extends JDialog {
                             }
 
                             jc.setEstad(estad);
-
+                        
                             if (modi == true) {
                                 Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().set(MiJugador, jc);
                                 Administracion.getInstancia().Guardar(Administracion.getInstancia());
@@ -764,7 +765,7 @@ public class RegJugador extends JDialog {
                             }
                         } else {
                             int sa = cod_ju(nom, num);
-        
+
                             try {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();
@@ -821,6 +822,10 @@ public class RegJugador extends JDialog {
                 btnCancelar.setActionCommand("Cancel");
                 buttonPane.add(btnCancelar);
             }
+            if (mod == true) {
+                llenar(j, e);
+
+            }
 
         }
     }
@@ -832,16 +837,13 @@ public class RegJugador extends JDialog {
             ResultSet rs;
             rs = st.executeQuery("SELECT MAX(codigo_jugador) as todo FROM Jugador");
             while (rs.next()) {
-                int fcod = rs.getInt("todo") + 1;
-                System.out.println(fcod);
-                PreparedStatement ts = db.prepareStatement("INSERT INTO EstadisticaPitcher(H, D, CL, BB, HR, SO, codigo_jugador) VALUES (?,?,?,?,?,?,?)");
+                PreparedStatement ts = db.prepareStatement("INSERT INTO EstadisticaPitcher(H, D, CL, BB, HR, SO, codigo_Jugador) VALUES (?,?,?,?,?,?,0)");
                 ts.setInt(1, H_Pitch);
                 ts.setInt(2, D_Pitch);
                 ts.setInt(3, CL);
                 ts.setInt(4, BB_Pitch);
                 ts.setInt(5, HR_Pitch);
                 ts.setInt(6, SO_Pitch);
-                ts.setInt(7, fcod);
                 ts.executeQuery();
             }
 
@@ -857,9 +859,9 @@ public class RegJugador extends JDialog {
             ResultSet rs;
             rs = st.executeQuery("SELECT MAX(codigo_jugador) as todo FROM Jugador");
             while (rs.next()) {
-                int fcod = rs.getInt("todo") + 1;
-                System.out.println(fcod);
-                PreparedStatement ts = db.prepareStatement("INSERT INTO Estadistica(AB, D, H, DOSB, TRESB, BB, HR, SO, codigo_jugador) VALUES (?,?,?,?,?,?,?,?,?)");
+                //int fcod = rs.getInt("todo") + 1;
+                
+                PreparedStatement ts = db.prepareStatement("INSERT INTO Estadistica(AB, D, H, DOSB, TRESB, BB, HR, SO, codigo_jugador) VALUES (?,?,?,?,?,?,?,?,0)");
                 ts.setInt(1, AB);
                 ts.setInt(2, D);
                 ts.setInt(3, H);
@@ -868,7 +870,6 @@ public class RegJugador extends JDialog {
                 ts.setInt(6, triple);
                 ts.setInt(7, BB);
                 ts.setInt(8, SO);
-                ts.setInt(9, fcod);
                 ts.executeQuery();
             }
 
@@ -893,7 +894,7 @@ public class RegJugador extends JDialog {
         }
         return fcod;
     }
-    
+
     public int cod_ju(String s, int b) {
         int fcod = 0;
         try {
@@ -909,6 +910,110 @@ public class RegJugador extends JDialog {
             System.out.println("Error " + a.getMessage());
         }
         return fcod;
+    }
+
+    public void llenar(int f, int b) throws SQLException {
+        Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+        Statement sts = db.createStatement();
+        ResultSet rss;
+        rss = sts.executeQuery("SELECT * FROM Jugador WHERE Jugador.codigo_jugador= " + f + "");
+        while (rss.next()) {
+            int fcodito = rss.getInt("codigo_posc");
+            if (fcodito == 8) {
+                try {
+
+                    Statement st = db.createStatement();
+                    ResultSet rs;
+                    rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher WHERE Jugador.codigo_Jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_jugador= " + f + "");
+                    while (rs.next()) {
+                        String fname = rs.getString("nombre");
+                        Date ffecha = rs.getDate("fecha_nacimento");
+                        int fpeso = rs.getInt("peso");
+                        String fbat = rs.getString("bateo");
+                        String flaz = rs.getString("lanzamiento");
+                        String fpais = rs.getString("pais");
+                        int faltura = rs.getInt("altura");
+                        int fpos = rs.getInt("codigo_posc");
+                        int fequipo = rs.getInt("codigo_equipo");
+                        int fnumero = rs.getInt("numero");
+                        int fh = rs.getInt("H");
+                        int fd = rs.getInt("D");
+                        int fcl = rs.getInt("CL");
+                        int fbb = rs.getInt("BB");
+                        int fhr = rs.getInt("HR");
+                        int fso = rs.getInt("SO");
+                        txtNombre.setText(fname);
+                        cbxPais.setSelectedItem(fpais);
+                        fechaNacimiento.setDate(ffecha);
+                        cbxPosicion.setSelectedIndex(fpos);
+                        spnPeso.setValue(fpeso);
+                        spnAltura.setValue(faltura);
+                        cbxLanzamiento.setSelectedItem(flaz);
+                        spnNumero.setValue(fnumero);
+                        cbxBateo.setSelectedItem(fbat);
+                        cbxEquipo.setSelectedIndex(fequipo);
+                        cbxEquipo.setEnabled(false);
+                        spnH_Pitch.setValue(fh);
+                        spnD_Pitch.setValue(fd);
+                        spnBB_Pitch.setValue(fbb);
+                        spnHR_Pitch.setValue(fhr);
+                        spnSO_Pitch.setValue(fso);
+                        spnCL.setValue(fcl);
+
+                    }
+                } catch (SQLException a) {
+                    System.out.println("Error " + a.getMessage());
+                }
+            } else {
+                try {
+                    Statement st = db.createStatement();
+                    ResultSet rs;
+                    rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica WHERE Jugador.codigo_Jugador = Estadistica.codigo_jugador AND Jugador.codigo_jugador= " + f + "");
+                    while (rs.next()) {
+                        String fname = rs.getString("nombre");
+                        Date ffecha = rs.getDate("fecha_nacimento");
+                        int fpeso = rs.getInt("peso");
+                        String fbat = rs.getString("bateo");
+                        String flaz = rs.getString("lanzamiento");
+                        String fpais = rs.getString("pais");
+                        int faltura = rs.getInt("altura");
+                        int fpos = rs.getInt("codigo_posc");
+                        int fequipo = rs.getInt("codigo_equipo");
+                        int fnumero = rs.getInt("numero");
+                        int fab = rs.getInt("AB");
+                        int fd = rs.getInt("D");
+                        int fh = rs.getInt("H");
+                        int f2b = rs.getInt("DOSB");
+                        int f3b = rs.getInt("TRESB");
+                        int fbb = rs.getInt("BB");
+                        int fhr = rs.getInt("HR");
+                        int fso = rs.getInt("SO");
+                        txtNombre.setText(fname);
+                        cbxPais.setSelectedItem(fpais);
+                        fechaNacimiento.setDate(ffecha);
+                        cbxPosicion.setSelectedIndex(fpos);
+                        spnPeso.setValue(fpeso);
+                        spnAltura.setValue(faltura);
+                        cbxLanzamiento.setSelectedItem(flaz);
+                        spnNumero.setValue(fnumero);
+                        cbxBateo.setSelectedItem(fbat);
+                        cbxEquipo.setSelectedIndex(fequipo);
+                        cbxEquipo.setEnabled(false);
+                        spnAB.setValue(fab);
+                        spnD.setValue(fd);
+                        spnH.setValue(fh);
+                        spn2B.setValue(f2b);
+                        spn3B.setValue(f3b);
+                        spnBB.setValue(fbb);
+                        spnHR.setValue(fhr);
+                        spnSO.setValue(fso);
+                    }
+                } catch (SQLException a) {
+                    System.out.println("Error " + a.getMessage());
+                }
+            }
+        }
+
     }
 
     public void Modificar_pit() {

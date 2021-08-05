@@ -162,7 +162,7 @@ public class VerJugador extends JDialog {
             lblLanza.setFont(new Font("Tahoma", Font.BOLD, 15));
             lblLanza.setBounds(382, 130, 100, 16);
             panel_1.add(lblLanza);
-            
+
             JLabel lblNmero = new JLabel("N\u00FAmero:");
             lblNmero.setFont(new Font("Tahoma", Font.BOLD, 15));
             lblNmero.setBounds(275, 24, 79, 16);
@@ -236,10 +236,6 @@ public class VerJugador extends JDialog {
                 System.out.println("Error " + a.getMessage());
             }
 
-            
-
-            
-
             JLabel lblEstadisticasTemporadaRegular = new JLabel("Estadisticas Temporada Regular");
             lblEstadisticasTemporadaRegular.setFont(new Font("Tahoma", Font.BOLD, 15));
             lblEstadisticasTemporadaRegular.setBounds(10, 217, 314, 28);
@@ -250,7 +246,20 @@ public class VerJugador extends JDialog {
             lblEquipo.setBounds(10, 9, 435, 22);
             panel.add(lblEquipo);
 
-            lblEquipo.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
+            try {
+                Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+                Statement st = db.createStatement();
+                ResultSet rs;
+                rs = st.executeQuery("SELECT nombre_equipo FROM Equipo WHERE codigo_equipo='" + MiEquipo + "'");
+
+                while (rs.next()) {
+                    String fname = rs.getString("nombre_equipo");
+                    lblEquipo.setText(fname);
+                }
+            } catch (SQLException a) {
+                System.out.println("Error " + a.getMessage());
+            }
+
         }
         {
             JPanel buttonPane = new JPanel();
@@ -325,7 +334,7 @@ public class VerJugador extends JDialog {
                         fila[3] = fbb;
                         fila[4] = fhr;
                         fila[5] = fso;
-                        fila[6] = fso;
+                        fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;
 
                         model.addRow(fila);
                     }
@@ -347,7 +356,7 @@ public class VerJugador extends JDialog {
                         fila[3] = fbb;
                         fila[4] = fhr;
                         fila[5] = fso;
-                        fila[6] = fso;
+                        fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;
 
                         model.addRow(fila);
                     }

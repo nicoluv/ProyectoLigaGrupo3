@@ -128,7 +128,7 @@ public class ListJugadores extends JDialog {
                     public void actionPerformed(ActionEvent e) {
                         int p = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
                
-                        VerJugador vj = new VerJugador(p, cbxEquipos.getSelectedIndex());
+                        VerJugador vj = new VerJugador(p, cod_eq(cbxEquipos.getSelectedItem().toString()));
                         vj.setModal(true);
                         vj.setVisible(true);
                         loadTable(cod_eq(cbxEquipos.getSelectedItem().toString()));
