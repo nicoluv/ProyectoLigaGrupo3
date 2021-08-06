@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
@@ -42,6 +44,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 public class VerJugador extends JDialog {
 
@@ -212,10 +215,11 @@ public class VerJugador extends JDialog {
                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                 Statement st = db.createStatement();
                 ResultSet rs;
-                rs = st.executeQuery("SELECT DISTINCT Jugador.*, DATEDIFF(YEAR, (Jugador.fecha_nacimento), GETDATE()) as Edad, Posicion.descripcion FROM Jugador, Posicion WHERE Posicion.codigo_posc = Jugador.codigo_posc AND codigo_Jugador='" + MiJugador + "'");
+                rs = st.executeQuery("SELECT Jugador.*, DATEDIFF(YEAR, (Jugador.fecha_nacimento), GETDATE()) as Edad, Posicion.descripcion FROM Jugador, Posicion WHERE Posicion.codigo_posc = Jugador.codigo_posc AND codigo_Jugador='" + MiJugador + "'");
 
                 while (rs.next()) {
                     String fname = rs.getString("nombre");
+                    String fapellido = rs.getString("apellido");
                     String fbat = rs.getString("bateo");
                     String flaz = rs.getString("lanzamiento");
                     String fpais = rs.getString("pais");
@@ -223,7 +227,8 @@ public class VerJugador extends JDialog {
                     String fpos = rs.getString("descripcion");
                     int fnumero = rs.getInt("numero");
                     int fedad = rs.getInt("Edad");
-                    lblNombreApellido.setText(fname);
+                    byte[] fimage = rs.getBytes("imagen");
+                    lblNombreApellido.setText("" + fname + " " + fapellido + "");
                     lblAltura.setText((String.valueOf(faltura)) + "'");
                     lblEdaad.setText((String.valueOf(fedad)));
                     lblBatea.setText(fbat);
@@ -231,6 +236,9 @@ public class VerJugador extends JDialog {
                     lblPais.setText(fpais);
                     lblPosicion.setText(fpos);
                     lblNumero.setText(String.valueOf(fnumero));
+                    Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                    ImageIcon icon = new ImageIcon(img);
+                    lblFoto.setIcon(icon);
                 }
             } catch (SQLException a) {
                 System.out.println("Error " + a.getMessage());
@@ -334,7 +342,7 @@ public class VerJugador extends JDialog {
                         fila[3] = fh;
                         fila[4] = fhr;
                         fila[5] = fso;
-                        fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;
+                        fila[6] = (fh + fd + fcl + fbb + fhr + fso) / 6;
 
                         model.addRow(fila);
                     }
@@ -356,7 +364,7 @@ public class VerJugador extends JDialog {
                         fila[3] = fcl;
                         fila[4] = fhr;
                         fila[5] = fso;
-                        fila[6] = (fh+fd+fcl+fbb+fhr+fso)/6;
+                        fila[6] = (fh + fd + fcl + fbb + fhr + fso) / 6;
 
                         model.addRow(fila);
                     }
@@ -378,10 +386,11 @@ public class VerJugador extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT DISTINCT Jugador.*, DATEDIFF(YEAR, (Jugador.fecha_nacimento), GETDATE()) as Edad, Posicion.descripcion FROM Jugador, Posicion WHERE Posicion.codigo_posc = Jugador.codigo_posc AND codigo_Jugador='" + MiJugador + "'");
+            rs = st.executeQuery("SELECT Jugador.*, DATEDIFF(YEAR, (Jugador.fecha_nacimento), GETDATE()) as Edad, Posicion.descripcion FROM Jugador, Posicion WHERE Posicion.codigo_posc = Jugador.codigo_posc AND codigo_Jugador='" + MiJugador + "'");
 
             while (rs.next()) {
                 String fname = rs.getString("nombre");
+                String fapellido = rs.getString("apellido");
                 Date ffecha = rs.getDate("fecha_nacimento");
                 int fpeso = rs.getInt("peso");
                 String fbat = rs.getString("bateo");
@@ -391,7 +400,8 @@ public class VerJugador extends JDialog {
                 String fpos = rs.getString("descripcion");
                 int fnumero = rs.getInt("numero");
                 int fedad = rs.getInt("Edad");
-                lblNombreApellido.setText(fname);
+                byte[] fimage = rs.getBytes("imagen");
+                lblNombreApellido.setText("" + fname + " " + fapellido + "");
                 lblAltura.setText((String.valueOf(faltura)) + "'");
                 lblEdaad.setText((String.valueOf(fedad)));
                 lblBatea.setText(fbat);
@@ -399,6 +409,9 @@ public class VerJugador extends JDialog {
                 lblPais.setText(fpais);
                 lblPosicion.setText(fpos);
                 lblNumero.setText(String.valueOf(fnumero));
+                Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                ImageIcon icon = new ImageIcon(img);
+                lblFoto.setIcon(icon);
             }
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());

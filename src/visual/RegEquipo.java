@@ -25,8 +25,11 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -116,8 +119,7 @@ public class RegEquipo extends JDialog {
                         String nomImagen;
                         File arch = new File(fc.getSelectedFile().toString());
 
-                        //rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
-
+                        rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
                         try {
                             imagen = ImageIO.read(arch);
                             nomImagen = "imgequipos/" + txtNombre.getText() + ".png";
@@ -143,18 +145,29 @@ public class RegEquipo extends JDialog {
                 okButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
                 okButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        
+
                         try {
                             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                             String nombre = txtNombre.getText();
                             String estadio = txtEstadio.getText();
                             String estado = txtProvincia.getText();
                             String manager = txtManager.getText();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            ImageIO.write(imagen, "jpg", baos);
+                            baos.flush();
+                            byte[] immAsBytes = baos.toByteArray();
+                            baos.close();
                             Statement st = db.createStatement();
                             ResultSet rs;
                             if (!nombre.equalsIgnoreCase("") && !estadio.equalsIgnoreCase("") && !estadio.equalsIgnoreCase("")) {
                                 JOptionPane.showMessageDialog(null, "Se ha creado el equipo correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                rs = st.executeQuery("INSERT INTO Equipo(nombre_equipo, estadio, estado, manager)  " + "VALUES ('" + nombre + "','" + estadio + "','" + estado + "','" + manager + "')");
+                                PreparedStatement ts = db.prepareStatement("INSERT INTO Equipo(nombre_equipo, estadio, estado, manager, imagen_equipo) VALUES (?,?,?,?,?)");
+                                ts.setString(1, nombre);
+                                ts.setString(2, estadio);
+                                ts.setString(3, estado);
+                                ts.setString(4, manager);
+                                ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
+                                ts.setBinaryStream(5, bais, immAsBytes.length);
                             } else {
                                 JOptionPane.showMessageDialog(null, "Por favor revisar los datos", "Aviso", JOptionPane.WARNING_MESSAGE);
                             }

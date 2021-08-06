@@ -44,6 +44,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -60,6 +62,7 @@ public class RegJugador extends JDialog {
 
     private final JPanel contentPanel = new JPanel();
     private JTextField txtNombre;
+    private JTextField txtApellido;
     private JComboBox cbxPais;
     private JComboBox cbxLanzamiento;
     private JComboBox cbxBateo;
@@ -119,7 +122,7 @@ public class RegJugador extends JDialog {
 
             JLabel lblNombre = new JLabel("Nombre del jugador:");
             lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 11));
-            lblNombre.setBounds(12, 12, 98, 16);
+            lblNombre.setBounds(10, 12, 98, 16);
             panel.add(lblNombre);
 
             txtNombre = new JTextField();
@@ -138,13 +141,34 @@ public class RegJugador extends JDialog {
             panel.add(txtNombre);
             txtNombre.setColumns(10);
 
+            JLabel lblApellido = new JLabel("Apellido del jugador:");
+            lblApellido.setFont(new Font("Tahoma", Font.PLAIN, 11));
+            lblApellido.setBounds(10, 44, 98, 16);
+            panel.add(lblApellido);
+
+            txtApellido = new JTextField();
+            txtApellido.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    char validar = e.getKeyChar();
+
+                    if (Character.isDigit(validar)) {
+                        e.consume();
+                        JOptionPane.showMessageDialog(null, "Solo se permiten letras.");
+                    }
+                }
+            });
+            txtApellido.setBounds(137, 42, 204, 20);
+            panel.add(txtApellido);
+            txtApellido.setColumns(10);
+
             JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento: ");
             lblFechaDeNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 11));
-            lblFechaDeNacimiento.setBounds(12, 44, 124, 16);
+            lblFechaDeNacimiento.setBounds(10, 72, 124, 16);
             panel.add(lblFechaDeNacimiento);
 
             fechaNacimiento = new JDateChooser();
-            fechaNacimiento.setBounds(137, 42, 162, 20);
+            fechaNacimiento.setBounds(137, 70, 162, 20);
             panel.add(fechaNacimiento);
 
             JLabel lblPasDeOrigen = new JLabel("Pa\u00EDs:");
@@ -160,24 +184,24 @@ public class RegJugador extends JDialog {
 
             JLabel lblLanzamiento = new JLabel("Lanzamiento:");
             lblLanzamiento.setFont(new Font("Tahoma", Font.PLAIN, 11));
-            lblLanzamiento.setBounds(12, 104, 83, 16);
+            lblLanzamiento.setBounds(10, 126, 83, 16);
             panel.add(lblLanzamiento);
 
             cbxLanzamiento = new JComboBox();
             cbxLanzamiento.setFont(new Font("Tahoma", Font.PLAIN, 11));
             cbxLanzamiento.setModel(new DefaultComboBoxModel(new String[]{"<Seleccionar>", "Izquierdo", "Derecho"}));
-            cbxLanzamiento.setBounds(137, 102, 162, 20);
+            cbxLanzamiento.setBounds(137, 124, 162, 20);
             panel.add(cbxLanzamiento);
 
             cbxBateo = new JComboBox();
             cbxBateo.setFont(new Font("Tahoma", Font.PLAIN, 11));
             cbxBateo.setModel(new DefaultComboBoxModel(new String[]{"<Seleccionar>", "Izquierdo", "Derecho"}));
-            cbxBateo.setBounds(137, 130, 162, 20);
+            cbxBateo.setBounds(137, 151, 162, 20);
             panel.add(cbxBateo);
 
             JLabel lblBateo = new JLabel("Bateo:");
             lblBateo.setFont(new Font("Tahoma", Font.PLAIN, 11));
-            lblBateo.setBounds(12, 132, 42, 16);
+            lblBateo.setBounds(10, 153, 42, 16);
             panel.add(lblBateo);
 
             JLabel lblPosicin = new JLabel("Posici\u00F3n:");
@@ -247,7 +271,7 @@ public class RegJugador extends JDialog {
 
             panel_estadisticas = new JPanel();
             panel_estadisticas.setBorder(new TitledBorder(null, "Estad\u00EDsticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-            panel_estadisticas.setBounds(12, 172, 571, 103);
+            panel_estadisticas.setBounds(12, 180, 571, 103);
             panel.add(panel_estadisticas);
             panel_estadisticas.setLayout(null);
 
@@ -340,7 +364,7 @@ public class RegJugador extends JDialog {
             panel_estadisticas.add(lblSo);
 
             panel_estadPitcher = new JPanel();
-            panel_estadPitcher.setBounds(12, 172, 571, 103);
+            panel_estadPitcher.setBounds(12, 180, 571, 103);
             panel.add(panel_estadPitcher);
             panel_estadPitcher.setLayout(null);
             panel_estadPitcher.setBorder(new TitledBorder(null, "Estad\u00EDsticas", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -414,7 +438,7 @@ public class RegJugador extends JDialog {
 
             JLabel lblPeso = new JLabel("Peso (KG):");
             lblPeso.setFont(new Font("Tahoma", Font.PLAIN, 11));
-            lblPeso.setBounds(12, 76, 51, 16);
+            lblPeso.setBounds(10, 99, 51, 16);
             panel.add(lblPeso);
 
             JLabel lblAltura = new JLabel("Altura (CM):");
@@ -425,7 +449,7 @@ public class RegJugador extends JDialog {
             spnPeso = new JSpinner();
             spnPeso.setFont(new Font("Tahoma", Font.PLAIN, 11));
             spnPeso.setModel(new SpinnerNumberModel(new Integer(80), new Integer(80), null, new Integer(1)));
-            spnPeso.setBounds(137, 74, 162, 20);
+            spnPeso.setBounds(137, 99, 162, 20);
             panel.add(spnPeso);
 
             spnAltura = new JSpinner();
@@ -449,7 +473,7 @@ public class RegJugador extends JDialog {
                         String nomImagen;
                         File arch = new File(fc.getSelectedFile().toString());
 
-                        //rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
+                        rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
                         try {
 
                             imagen = ImageIO.read(arch);
@@ -492,14 +516,20 @@ public class RegJugador extends JDialog {
                 btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 11));
                 btnRegistrar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        String nom, fecha, lanz, bat, pais;
+                        String nom, fecha, lanz, bat, pais, apell;
                         int pos, equipo;
                         boolean val = false;
                         Date date;
                         int peso, altura, AB, D, H, HR, doble, triple, BB, SO, num;
                         int H_Pitch, D_Pitch, CL, BB_Pitch, HR_Pitch, SO_Pitch;
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(imagen, "jpg", baos);
+                        baos.flush();
+                        byte[] immAsBytes = baos.toByteArray();
+                        baos.close();
 
                         nom = txtNombre.getText();
+                        apell = txtApellido.getText();
                         date = fechaNacimiento.getDate();
                         long d = date.getTime(); //guardamos en un long el tiempo
                         java.sql.Date fechita = new java.sql.Date(d);// parseamos al formato del sql  
@@ -552,8 +582,22 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_pitcher(H_Pitch, D_Pitch, CL, BB_Pitch, HR_Pitch, SO_Pitch);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + fechita + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
-
+                                    PreparedStatement ts = db.prepareStatement("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico, apellido,imagen)  " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                    ts.setString(1, nom);
+                                    ts.setDate(2, fechita);
+                                    ts.setString(3, lanz);
+                                    ts.setString(4, bat);
+                                    ts.setString(5, pais);
+                                    ts.setInt(6, peso);
+                                    ts.setInt(7, altura);
+                                    ts.setInt(8, pos);
+                                    ts.setInt(9, equipo);
+                                    ts.setInt(10, num);
+                                    ts.setInt(11, 1);
+                                    ts.setString(12, apell);
+                                    ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
+                                    ts.setBinaryStream(13, bais, immAsBytes.length);
+                                    ts.executeQuery();
                                 }
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());
@@ -578,8 +622,22 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_campo(AB, D, H, HR, doble, triple, BB, SO);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + fechita + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
-
+                                    PreparedStatement ts = db.prepareStatement("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico, apellido,imagen)  " + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                                    ts.setString(1, nom);
+                                    ts.setDate(2, fechita);
+                                    ts.setString(3, lanz);
+                                    ts.setString(4, bat);
+                                    ts.setString(5, pais);
+                                    ts.setInt(6, peso);
+                                    ts.setInt(7, altura);
+                                    ts.setInt(8, pos);
+                                    ts.setInt(9, equipo);
+                                    ts.setInt(10, num);
+                                    ts.setInt(11, 1);
+                                    ts.setString(12, apell);
+                                    ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
+                                    ts.setBinaryStream(13, bais, immAsBytes.length);
+                                    ts.executeQuery();
                                 }
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());
@@ -689,7 +747,7 @@ public class RegJugador extends JDialog {
                 buttonPane.add(btnModificar);
                 btnModificar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        String nom, fecha, lanz, bat, pais;
+                        String nom, fecha, lanz, bat, pais, apell;
                         int pos;
                         boolean val = false;
                         Date date;
@@ -697,10 +755,16 @@ public class RegJugador extends JDialog {
                         int H_Pitch, D_Pitch, CL, BB_Pitch, HR_Pitch, SO_Pitch;
 
                         nom = txtNombre.getText();
+                        apell = txtApellido.getText();
                         date = fechaNacimiento.getDate();
                         long d = date.getTime(); //guardamos en un long el tiempo
                         java.sql.Date fechita = new java.sql.Date(d);// parseamos al formato del sql  
                         Calendar cal = Calendar.getInstance();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(imagen, "jpg", baos);
+                        baos.flush();
+                        byte[] immAsBytes = baos.toByteArray();
+                        baos.close();
 
                         /*DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						fecha = format.format(date);*/
@@ -744,7 +808,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Este jugador no existe", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ? WHERE nombre = ?");
+                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE nombre = ?");
                                     ts.setInt(1, num);
                                     ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
@@ -753,7 +817,9 @@ public class RegJugador extends JDialog {
                                     ts.setString(6, lanz);
                                     ts.setString(7, pais);
                                     ts.setInt(8, pos);
-                                    ts.setString(9, nom);
+                                    ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
+                                    ts.setBinaryStream(9, bais, immAsBytes.length);
+                                    ts.setString(10, nom);
                                     ts.executeUpdate();
                                     PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET H = ?, D = ?, CL = ?, BB = ?, HR = ?, SO = ? WHERE codigo_jugador = ?");
                                     sts.setInt(1, H);
@@ -786,7 +852,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Este jugador no existe", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ? FROM Estadistica WHERE Jugador.nombre = ?");
+                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE nombre = ?");
                                     ts.setInt(1, num);
                                     ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
@@ -795,7 +861,9 @@ public class RegJugador extends JDialog {
                                     ts.setString(6, lanz);
                                     ts.setString(7, pais);
                                     ts.setInt(8, pos);
-                                    ts.setString(9, nom);
+                                    ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
+                                    ts.setBinaryStream(9, bais, immAsBytes.length);
+                                    ts.setString(10, nom);
                                     ts.executeUpdate();
                                     PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET AB = ?, D = ?, H = ?, DOSB = ?, TRESB = ?, BB = ?, HR = ?, SO = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
                                     sts.setInt(1, AB);
@@ -949,6 +1017,7 @@ public class RegJugador extends JDialog {
                     rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher WHERE Jugador.codigo_Jugador = EstadisticaPitcher.codigo_jugador AND Jugador.codigo_jugador= " + f + "");
                     while (rs.next()) {
                         String fname = rs.getString("nombre");
+                        String fapellido = rs.getString("apellido");
                         Date ffecha = rs.getDate("fecha_nacimento");
                         int fpeso = rs.getInt("peso");
                         String fbat = rs.getString("bateo");
@@ -965,6 +1034,7 @@ public class RegJugador extends JDialog {
                         int fhr = rs.getInt("HR");
                         int fso = rs.getInt("SO");
                         txtNombre.setText(fname);
+                        txtApellido.setText(fapellido);
                         cbxPais.setSelectedItem(fpais);
                         fechaNacimiento.setDate(ffecha);
                         cbxPosicion.setSelectedIndex(fpos);
@@ -993,6 +1063,7 @@ public class RegJugador extends JDialog {
                     rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica WHERE Jugador.codigo_Jugador = Estadistica.codigo_jugador AND Jugador.codigo_jugador= " + f + "");
                     while (rs.next()) {
                         String fname = rs.getString("nombre");
+                        String fapellido = rs.getString("apellido");
                         Date ffecha = rs.getDate("fecha_nacimento");
                         int fpeso = rs.getInt("peso");
                         String fbat = rs.getString("bateo");
@@ -1011,6 +1082,7 @@ public class RegJugador extends JDialog {
                         int fhr = rs.getInt("HR");
                         int fso = rs.getInt("SO");
                         txtNombre.setText(fname);
+                        txtApellido.setText(fapellido);
                         cbxPais.setSelectedItem(fpais);
                         fechaNacimiento.setDate(ffecha);
                         cbxPosicion.setSelectedIndex(fpos);
@@ -1051,6 +1123,7 @@ public class RegJugador extends JDialog {
             rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher WHERE Jugador.codigo_Jugador = EstadisticaPitcher.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.numero='" + num + "'");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
+                String fapellido = rs.getString("apellido");
                 Date ffecha = rs.getDate("fecha_nacimento");
                 int fpeso = rs.getInt("peso");
                 String fbat = rs.getString("bateo");
@@ -1067,6 +1140,7 @@ public class RegJugador extends JDialog {
                 int fhr = rs.getInt("HR");
                 int fso = rs.getInt("SO");
                 txtNombre.setText(fname);
+                txtApellido.setText(fapellido);
                 cbxPais.setSelectedItem(fpais);
                 fechaNacimiento.setDate(ffecha);
                 cbxPosicion.setSelectedIndex(fpos);
@@ -1103,6 +1177,7 @@ public class RegJugador extends JDialog {
             rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica WHERE Jugador.codigo_Jugador = Estadistica.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.numero='" + num + "'");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
+                String fapellido = rs.getString("apellido");
                 Date ffecha = rs.getDate("fecha_nacimento");
                 int fpeso = rs.getInt("peso");
                 String fbat = rs.getString("bateo");
@@ -1121,6 +1196,7 @@ public class RegJugador extends JDialog {
                 int fhr = rs.getInt("HR");
                 int fso = rs.getInt("SO");
                 txtNombre.setText(fname);
+                txtApellido.setText(fapellido);
                 cbxPais.setSelectedItem(fpais);
                 fechaNacimiento.setDate(ffecha);
                 cbxPosicion.setSelectedIndex(fpos);
