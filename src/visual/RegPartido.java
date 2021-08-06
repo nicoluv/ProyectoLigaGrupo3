@@ -149,8 +149,9 @@ public class RegPartido extends JDialog {
                     public void actionPerformed(ActionEvent arg0) {
                         try {
                             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
-                            Date fecha = null;
-                            Calendar cal = Calendar.getInstance();
+                            Date date = dateChooser.getDate();
+                            long d = date.getTime(); //guardamos en un long el tiempo
+                            java.sql.Date fechita = new java.sql.Date(d);// parseamos al formato del sql  
                             String hora, estado;
                             int Visita = cod_eq(cbxVisitante.getSelectedItem().toString());
                             int Local = cod_eq(cbxLocal.getSelectedItem().toString());
@@ -163,7 +164,7 @@ public class RegPartido extends JDialog {
                             ts.setInt(2, Visita);
                             ts.setString(3, estado);
                             ts.setString(4, hora);
-                            ts.setDate(5, new java.sql.Date(cal.getTimeInMillis()));
+                            ts.setDate(5, fechita);
                             ts.executeQuery();
                         } catch (SQLException a) {
                             System.out.println("Error " + a.getMessage());

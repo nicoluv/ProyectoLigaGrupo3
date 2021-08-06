@@ -112,7 +112,7 @@ public class ListPartidos extends JDialog {
                     btnJugarPartido.setEnabled(false);
                     btnJugarPartido.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
-                            Simulacion sim = new Simulacion(cod_eq(table.getValueAt(table.getSelectedRow(), 1).toString()), cod_eq(table.getValueAt(table.getSelectedRow(), 2).toString()), index);
+                            Simulacion sim = new Simulacion(cod_eq(table.getValueAt(table.getSelectedRow(), 1).toString()), cod_eq(table.getValueAt(table.getSelectedRow(), 2).toString()), Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
                                         sim.setModal(true);
                                         sim.setVisible(true);
                                         Administracion.getInstancia().getMisPartidos().get(index).setEstado(false);
@@ -193,6 +193,8 @@ public class ListPartidos extends JDialog {
                 String festadio = estadi(fname1);
                 String fhora= rs.getString("hora");
                 String festado = rs.getString("estado");
+                int fcarl = rs.getInt("carrera_local");
+                int fcarv = rs.getInt("carrera_visitante");
                 String ffecha = rs.getDate("fecha_partido").toString();
                 fila[0] = fcodigo;
                 fila[1] = fname1;
@@ -201,8 +203,26 @@ public class ListPartidos extends JDialog {
                 fila[4] = fhora;
                 fila[5] = ffecha;
                 fila[6] = festado;
-                fila[7] = "0 - 0";
-                fila[8] = "Por Definir";
+                fila[7] = "" + fcarl+ " - " + fcarv + "";
+                if("Pendiente".equals(festado))
+                {
+                    fila[8] = "Por Definir";
+                }
+                else
+                {
+                    if(fcarl > fcarv)
+                    {
+                        fila[8] = fname1;
+                    }else if(fcarl == fcarv) 
+                    {
+                        fila[8] = "";
+                    }
+                    else
+                    {
+                        fila[8] = fname2;
+                    }
+                }
+                
 
                 model.addRow(fila);
             }

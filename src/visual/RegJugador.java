@@ -501,7 +501,10 @@ public class RegJugador extends JDialog {
 
                         nom = txtNombre.getText();
                         date = fechaNacimiento.getDate();
+                        long d = date.getTime(); //guardamos en un long el tiempo
+                        java.sql.Date fechita = new java.sql.Date(d);// parseamos al formato del sql  
                         Calendar cal = Calendar.getInstance();
+
 
                         /*DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 						fecha = format.format(date);*/
@@ -549,7 +552,7 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_pitcher(H_Pitch, D_Pitch, CL, BB_Pitch, HR_Pitch, SO_Pitch);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
+                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + fechita + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
 
                                 }
                             } catch (SQLException a) {
@@ -575,7 +578,7 @@ public class RegJugador extends JDialog {
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha creado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     Estadistica_campo(AB, D, H, HR, doble, triple, BB, SO);
-                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
+                                    rs = st.executeQuery("INSERT INTO Jugador(nombre, fecha_nacimento, lanzamiento, bateo, pais, peso, altura, codigo_posc, codigo_equipo, numero, estado_fisico)  " + "VALUES ('" + nom + "','" + fechita + "','" + lanz + "','" + bat + "','" + pais + "','" + peso + "','" + altura + "','" + pos + "','" + equipo + "','" + num + "',1)");
 
                                 }
                             } catch (SQLException a) {
@@ -695,6 +698,8 @@ public class RegJugador extends JDialog {
 
                         nom = txtNombre.getText();
                         date = fechaNacimiento.getDate();
+                        long d = date.getTime(); //guardamos en un long el tiempo
+                        java.sql.Date fechita = new java.sql.Date(d);// parseamos al formato del sql  
                         Calendar cal = Calendar.getInstance();
 
                         /*DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -741,7 +746,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ? WHERE nombre = ?");
                                     ts.setInt(1, num);
-                                    ts.setDate(2, new java.sql.Date(cal.getTimeInMillis()));
+                                    ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
                                     ts.setInt(4, altura);
                                     ts.setString(5, bat);
@@ -783,7 +788,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ? FROM Estadistica WHERE Jugador.nombre = ?");
                                     ts.setInt(1, num);
-                                    ts.setDate(2, new java.sql.Date(cal.getTimeInMillis()));
+                                    ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
                                     ts.setInt(4, altura);
                                     ts.setString(5, bat);
@@ -860,7 +865,7 @@ public class RegJugador extends JDialog {
             rs = st.executeQuery("SELECT MAX(codigo_jugador) as todo FROM Jugador");
             while (rs.next()) {
                 //int fcod = rs.getInt("todo") + 1;
-                
+
                 PreparedStatement ts = db.prepareStatement("INSERT INTO Estadistica(AB, D, H, DOSB, TRESB, BB, HR, SO, codigo_jugador) VALUES (?,?,?,?,?,?,?,?,0)");
                 ts.setInt(1, AB);
                 ts.setInt(2, D);
@@ -876,6 +881,23 @@ public class RegJugador extends JDialog {
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());
         }
+    }
+
+    public String nombre_eq(int s) {
+        String fcod = null;
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT nombre_equipo FROM Equipo WHERE codigo_equipo = " + s + "");
+            while (rs.next()) {
+                fcod = rs.getString("nombre_equipo");
+            }
+
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+        return fcod;
     }
 
     public int cod_eq(String s) {
@@ -951,7 +973,7 @@ public class RegJugador extends JDialog {
                         cbxLanzamiento.setSelectedItem(flaz);
                         spnNumero.setValue(fnumero);
                         cbxBateo.setSelectedItem(fbat);
-                        cbxEquipo.setSelectedIndex(fequipo);
+                        cbxEquipo.setSelectedItem(nombre_eq(fequipo));
                         cbxEquipo.setEnabled(false);
                         spnH_Pitch.setValue(fh);
                         spnD_Pitch.setValue(fd);

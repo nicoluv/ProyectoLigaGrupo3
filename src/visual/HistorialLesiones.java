@@ -21,6 +21,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JLabel;
 
 public class HistorialLesiones extends JDialog {
@@ -94,10 +99,29 @@ public class HistorialLesiones extends JDialog {
 				panel.add(lblEquipo);
 			}
 			
-			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre());
-			lblEdad.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getEdad()));
-			lblPos.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getPosicion());
-			lblEquipo.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
+                        
+                        try {
+                Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+                Statement st = db.createStatement();
+                ResultSet rs;
+                rs = st.executeQuery("select Jugador.nombre ,DATEDIFF(YEAR, (Jugador.fecha_nacimento), GETDATE()) as Edad ,Jugador.codigo_posc, Jugador.codigo_equipo from Jugador WHERE Jugador.codigo_Jugador = '" + MiJugador + "'");
+
+                while (rs.next()) {
+
+                    lblNombre.setText(rs.getString("nombre_equipo"));
+                    lblEdad.setText(rs.getString("manager"));
+                    lblPos.setText(rs.getString("estadio"));
+                    lblEquipo.setText(rs.getString("estado"));
+
+                }
+            } catch (SQLException a) {
+                System.out.println("Error " + a.getMessage());
+            }
+
+//			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getNombre());
+//			lblEdad.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getEdad()));
+//			lblPos.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getPosicion());
+//			lblEquipo.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
 			{
 				lblNombre_1 = new JLabel("Nombre:");
 				lblNombre_1.setBounds(12, 28, 55, 16);
@@ -144,19 +168,39 @@ public class HistorialLesiones extends JDialog {
 		String fecha;
 		
 		fila = new Object[model.getColumnCount()];
+                
+                        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("select Lesion.tipo_lesion,Lesion.atendido_por, Lesion.reposo ,Lesion.fecha_lesion from Lesion,Jugador WHERE Jugador.codigo_Jugador = '" + MiJugador + "'");
+            while (rs.next()) {
+                fila[0] = rs.getInt("tipo_lesion");
+                fila[1] = rs.getString("atendido_por");
+                fila[2] = rs.getInt("reposo");
+                fila[3] = rs.getString("fecha_lesion");
+
+                
+                model.addRow(fila);
+            }
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+                
+                
 		
-		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().size(); i++) {
-			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getTipoLesion();
-			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getAtendNombre();
-			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getDiasRec() + " Dias";
-			
-			date = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getMisLesiones().get(i).getFechaLesion();
-			fecha = format.format(date);
-			
-			fila[3] = fecha;
-			
-			model.addRow(fila);
-		}
+//		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().size(); i++) {
+//			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getTipoLesion();
+//			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getAtendNombre();
+//			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getDiasRec() + " Dias";
+//			
+//			date = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getFechaLesion();
+//			fecha = format.format(date);
+//			
+//			fila[3] = fecha;
+//			
+//			model.addRow(fila);
+//		}
 		
 	}
 }
