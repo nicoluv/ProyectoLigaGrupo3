@@ -45,6 +45,7 @@ public class RegLesion extends JDialog {
     private JComboBox cbxTipo;
     private JComboBox jAtendedor;
     private JTextPane txtDescripcion;
+    private int nom;
 
     public RegLesion(int i, int e) {
 
@@ -81,8 +82,8 @@ public class RegLesion extends JDialog {
 
             JComboBox jAtendedor = new JComboBox();
             jAtendedor.addActionListener(new ActionListener() {
-            	public void actionPerformed(ActionEvent e) {
-            		try {
+                public void actionPerformed(ActionEvent e) {
+                    try {
                         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
                         Connection con = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                         Statement st = con.createStatement();
@@ -94,7 +95,10 @@ public class RegLesion extends JDialog {
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(NewClass.class.getName()).log(Level.SEVERE, null, ex);
                     }
-            	}
+                    
+                    nom = jAtendedor.getSelectedIndex();
+                    
+                }
             });
             try {
                 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -105,14 +109,14 @@ public class RegLesion extends JDialog {
                 while (rs.next()) {
                     String fname = rs.getString("nombre_medico");
                     String fapellido = rs.getString("apellido_medico");
-                    jAtendedor.addItem(""+fname+" "+fapellido);
+                    jAtendedor.addItem("" + fname + " " + fapellido);
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(NewClass.class.getName()).log(Level.SEVERE, null, ex);
             }
             jAtendedor.setBounds(322, 27, 115, 22);
             panel.add(jAtendedor);
-            
+
             txtAtendido = new JTextField();
             txtAtendido.setEditable(false);
             txtAtendido.setBounds(447, 28, 131, 21);
@@ -132,8 +136,7 @@ public class RegLesion extends JDialog {
 
             txtDescripcion = new JTextPane();
             panel_1.add(txtDescripcion, BorderLayout.CENTER);
-            
-            
+
         }
         {
             JPanel buttonPane = new JPanel();
@@ -145,11 +148,9 @@ public class RegLesion extends JDialog {
                 btnRegistrar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         String tipo = cbxTipo.getSelectedItem().toString();
-                        String nombre = jAtendedor.getSelectedItem().toString();
+                        //String nombre = jAtendedor.getSelectedItem().toString();
                         String descrip = txtDescripcion.getText();
                         Calendar cal = Calendar.getInstance();
-                       
-                        
 
                         int reposo = 0;
                         if (cbxTipo.getSelectedIndex() == 1) {
@@ -165,18 +166,16 @@ public class RegLesion extends JDialog {
                         } else if (cbxTipo.getSelectedIndex() == 6) {
                             reposo = 18;
                         }
-                        if (!tipo.isEmpty() && !nombre.isEmpty() && !descrip.isEmpty()) {
+                        if (!tipo.isEmpty() && nom!=0 && !descrip.isEmpty()) {
 
                             try {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();
-                                PreparedStatement ts = db.prepareStatement("INSERT INTO Lesion(descripcion,atendido_por,fecha_lesion,tipo_lesion, codigo_jugador_lesion,reposo     )  " + "VALUES ('" + descrip + "','" + nombre + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + tipo + "'," + MiJugador + "," + reposo + ")");
-                            ts.executeUpdate();
-                               
-                        
-PreparedStatement ts2 = db.prepareStatement("UPDATE Jugador SET estado_fisico  = 0 WHERE Jugador.codigo_Jugador = 17");
-                            ts2.executeUpdate();
+                                PreparedStatement ts = db.prepareStatement("INSERT INTO Lesion(descripcion,codigo_medico,fecha_lesion,tipo_lesion, codigo_jugador_lesion,reposo     )  " + "VALUES ('" + descrip + "','" + nom + "','" + new java.sql.Date(cal.getTimeInMillis()) + "','" + tipo + "'," + MiJugador + "," + reposo + ")");
+                                ts.executeUpdate();
 
+                                PreparedStatement ts2 = db.prepareStatement("UPDATE Jugador SET estado_fisico = 0 WHERE Jugador.codigo_Jugador = " + MiJugador);
+                                ts2.executeUpdate();
 
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());

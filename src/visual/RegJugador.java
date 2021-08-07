@@ -475,10 +475,8 @@ public class RegJugador extends JDialog {
                     if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                         String nomImagen;
                         File arch = new File(fc.getSelectedFile().toString());
-
                         rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
                         try {
-
                             imagen = ImageIO.read(arch);
                             nomImagen = "imgjugadores/" + txtNombre.getText() + ".png";
                             ImageIO.write(imagen, "png", new File(nomImagen));

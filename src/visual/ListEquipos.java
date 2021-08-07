@@ -96,7 +96,7 @@ public class ListEquipos extends JDialog {
                                     JOptionPane.showMessageDialog(null, "El equipo ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                     dispose();
                                     PreparedStatement ts = db.prepareStatement("DELETE FROM Equipo WHERE codigo_equipo = ?");
-                                    ts.setString(1, table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
+                                    ts.setInt(1, Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
                                     ts.executeQuery();
                                     loadTable();
                                 } catch (SQLException a) {

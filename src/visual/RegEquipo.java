@@ -42,6 +42,8 @@ public class RegEquipo extends JDialog {
     private JTextField txtProvincia;
     private JTextField txtEstadio;
     private JTextField txtManager;
+    private BufferedImage imagen;
+
 
     public RegEquipo() {
         setResizable(false);
@@ -115,10 +117,8 @@ public class RegEquipo extends JDialog {
                     fc.setDialogTitle("Buscar imagen");
 
                     if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        BufferedImage imagen;
                         String nomImagen;
                         File arch = new File(fc.getSelectedFile().toString());
-
                         rsscalelabel.RSScaleLabel.setScaleLabel(lblImagen, fc.getSelectedFile().toString());
                         try {
                             imagen = ImageIO.read(arch);
@@ -145,10 +145,7 @@ public class RegEquipo extends JDialog {
                 okButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
                 okButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-
-                        try {
-                            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
-                            String nombre = txtNombre.getText();
+                        String nombre = txtNombre.getText();
                             String estadio = txtEstadio.getText();
                             String estado = txtProvincia.getText();
                             String manager = txtManager.getText();
@@ -157,8 +154,8 @@ public class RegEquipo extends JDialog {
                             baos.flush();
                             byte[] immAsBytes = baos.toByteArray();
                             baos.close();
-                            Statement st = db.createStatement();
-                            ResultSet rs;
+                        try {
+                            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                             if (!nombre.equalsIgnoreCase("") && !estadio.equalsIgnoreCase("") && !estadio.equalsIgnoreCase("")) {
                                 JOptionPane.showMessageDialog(null, "Se ha creado el equipo correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                 PreparedStatement ts = db.prepareStatement("INSERT INTO Equipo(nombre_equipo, estadio, estado, manager, imagen_equipo) VALUES (?,?,?,?,?)");
@@ -168,6 +165,7 @@ public class RegEquipo extends JDialog {
                                 ts.setString(4, manager);
                                 ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
                                 ts.setBinaryStream(5, bais, immAsBytes.length);
+                                ts.executeQuery();
                             } else {
                                 JOptionPane.showMessageDialog(null, "Por favor revisar los datos", "Aviso", JOptionPane.WARNING_MESSAGE);
                             }

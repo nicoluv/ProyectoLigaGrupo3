@@ -28,6 +28,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import static visual.ListEquipos.fila;
+import static visual.ListEquipos.model;
 
 public class Ranking extends JDialog {
 
@@ -47,7 +54,7 @@ public class Ranking extends JDialog {
 				Ranking.clear();
 			}
 		});
-		setTitle("Tabla de Pocisiones ");
+		setTitle("Tabla de Reporte de Pocisiones ");
 		setBounds(100, 100, 811, 477);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
@@ -64,21 +71,9 @@ public class Ranking extends JDialog {
 				scrollPane.setBounds(12, 25, 759, 349);
 				panel.add(scrollPane);
 				
-				for (Equipo equipo : Administracion.getInstancia().getMisEquipos()) {
-					Ranking.add(equipo);
-				}
+		
 				
-				Collections.sort(Ranking, new Comparator<Equipo>() {
-
-					@Override
-					public int compare(Equipo o1, Equipo o2) {
-						// TODO Auto-generated method stub
-						return Integer.valueOf(o2.getJugGanados()).compareTo(o1.getJugGanados());
-					}
-					
-				});
-				
-				String[] header = {"Nombre", "Manager", "Juegos Jugados", "Juegos Ganados", "Juegos Perdidos", "Winrate"};
+				String[] header = {"Nombre", "Manager", "Juegos Jugados", "Juegos Ganados", "Juegos Perdidos"};
 				model = new DefaultTableModel();
 				model.setColumnIdentifiers(header);
 				table = new JTable();
@@ -105,7 +100,7 @@ public class Ranking extends JDialog {
 				okButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						index = Administracion.getInstancia().findEquipo(Ranking.get(index).getNombre());
+						index = table.getSelectedRow();
 						VerEquipo VE = new VerEquipo(index);
 						VE.setModal(true);
 						VE.setVisible(true);
@@ -135,37 +130,40 @@ public class Ranking extends JDialog {
 		// TODO Auto-generated method stub
 		model.setRowCount(0);
 		fila = new Object[model.getColumnCount()];
-		for (int i = 0; i < Ranking.size(); i++) {
-			fila[0] = Ranking.get(i).getNombre();
-			fila[1] = Ranking.get(i).getManager();
-			fila[2] = Ranking.get(i).getJugJugados();
-			fila[3] = Ranking.get(i).getJugGanados();
-			fila[4] = Ranking.get(i).getJugPerdidos();
-			
-			int victorias = Ranking.get(i).getJugGanados();
-			int derrotas = Ranking.get(i).getJugPerdidos();
+                
+                        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("select Equipo.nombre_equipo, Equipo.manager, count(CASE WHEN Equipo.codigo_equipo = Partido.codigo_equipoLocal or Equipo.codigo_equipo = Partido.codigo_equipoVisitante THEN 1 END) Juegos_jugados,Sum(CASE WHEN Equipo.codigo_equipo = Partido.codigo_equipoLocal and Partido.carrera_local > Partido.carrera_visitante THEN 1\n" +
+"WHEN Equipo.codigo_equipo = Partido.codigo_equipoVisitante and Partido.carrera_local < Partido.carrera_visitante THEN 1\n" +
+"END) as Juegos_Ganados, Sum(CASE WHEN Equipo.codigo_equipo = Partido.codigo_equipoVisitante and Partido.carrera_local > Partido.carrera_visitante THEN 1\n" +
+"WHEN Equipo.codigo_equipo = Partido.codigo_equipoLocal and Partido.carrera_local < Partido.carrera_visitante THEN 1\n" +
+"END) as Juegos_Perdidos from Equipo, Partido Group by nombre_equipo, manager");
+            while (rs.next()) {
+         
+                
+                String enombre_equipo = rs.getString("nombre_equipo");
+                String emanager = rs.getString("manager");
+                int played = rs.getInt("Juegos_jugados");
+                int winner = rs.getInt("Juegos_Ganados");
+                int looser = rs.getInt("Juegos_Perdidos");
+                
 
-			if(victorias == 0 && derrotas == 0) {
-				fila[5] = "0 %";
-			}
-			else if(victorias != 0 && derrotas == 0) {
-				fila[5] = "100 %";
-			}
-			else if(victorias != 0 && derrotas != 0) {
-				float aux = (100) / (victorias + derrotas);
-				int WR = (int) (victorias * aux);
-				fila[5] = WR + " %";
-			}
-			
-			model.addRow(fila);
+                fila[0] = enombre_equipo;
+                fila[1] = emanager;
+                fila[2] = played;
+                fila[3] = winner;
+                fila[4] = looser;
+
+                model.addRow(fila);
+   
+            }
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+                
+                
+                
 		}
 	}
-
-
-
-
-
-
-
-	
-}

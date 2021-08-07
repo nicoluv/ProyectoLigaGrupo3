@@ -204,6 +204,7 @@ public class VerEquipo extends JDialog {
             btnmtrRegistrarLesion.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     if (table.getSelectedRow() >= 0) {
+                        index = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
                         RegLesion regl = new RegLesion(index, MiEquipo); //OBTENER SELECTED ROW
                         regl.setModal(true);
                         regl.setVisible(true);
