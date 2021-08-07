@@ -198,7 +198,6 @@ public class CambiarPitcher extends JDialog {
         }
 
     }
-
     public static int retorno() {
         return index;
     }

@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 public class JpanelGraphs extends JPanel {
 
 
-
 	private Image background;
 
 	public void paintComponent(Graphics g) {

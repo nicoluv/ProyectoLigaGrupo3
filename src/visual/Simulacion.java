@@ -1222,7 +1222,7 @@ public class Simulacion extends JDialog {
         }
 
     }
-
+    
     public static void LoadPitcherL(int b) {
         modelPitcherLocal.setRowCount(0);
         fila = new Object[modelPitcherLocal.getColumnCount()];
@@ -1245,7 +1245,6 @@ public class Simulacion extends JDialog {
         }
 
     }
-
     public static void LoadPitcherV(int b) {
         modelPitcherVisitante.setRowCount(0);
         fila = new Object[modelPitcherVisitante.getColumnCount()];
@@ -1267,7 +1266,6 @@ public class Simulacion extends JDialog {
             System.out.println("Error " + a.getMessage());
         }
     }
-
     public int cod_jug(String s) {
         int fcod = 0;
         try {

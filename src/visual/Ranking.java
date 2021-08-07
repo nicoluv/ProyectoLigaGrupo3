@@ -162,8 +162,6 @@ public class Ranking extends JDialog {
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());
         }
-                
-                
-                
+                            
 		}
 	}

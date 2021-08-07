@@ -250,10 +250,6 @@ public class RegJugador extends JDialog {
             lblEquipo.setBounds(359, 132, 42, 16);
             panel.add(lblEquipo);
 
-            /*for (Equipo i : Administracion.getInstancia().getMisEquipos()) {
-                nomEquipos.add(i.getNombre());
-            }*/
-            //cbxEquipo = new JComboBox(nomEquipos.toArray());
             cbxEquipo = new JComboBox();
             cbxEquipo.setFont(new Font("Tahoma", Font.PLAIN, 11));
             try {
@@ -537,8 +533,6 @@ public class RegJugador extends JDialog {
                         Calendar cal = Calendar.getInstance();
 
 
-                        /*DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-						fecha = format.format(date);*/
                         lanz = cbxLanzamiento.getSelectedItem().toString();
                         bat = cbxBateo.getSelectedItem().toString();
                         pais = cbxPais.getSelectedItem().toString();
@@ -644,98 +638,6 @@ public class RegJugador extends JDialog {
                                 System.out.println("Error " + a.getMessage());
                             }
                         }
-                        /*if (modi == false) {
-                            val = Administracion.getInstancia().buscarNumJug(Administracion.getInstancia().getMisEquipos().get(cbxEquipo.getSelectedIndex()), num);
-                        }
-
-                        if (nom.isEmpty() || date == null || cbxLanzamiento.getSelectedIndex() == 0 || cbxBateo.getSelectedIndex() == 0
-                                || cbxPais.getSelectedIndex() == 0 || cbxPosicion.getSelectedIndex() == 0 || peso == 0 || altura == 0) {
-                            JOptionPane.showMessageDialog(null, "Has dejado campos vac�os o sin seleccionar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                        } else if (fechaNacimiento.getCalendar().get(Calendar.YEAR) >= cal.get(Calendar.YEAR)
-                                || (cal.get(Calendar.YEAR) - fechaNacimiento.getCalendar().get(Calendar.YEAR)) < 16) {
-                            JOptionPane.showMessageDialog(null, "El jugador debe tener una fecha de nacimiento equivalente a 16 a�os o m�s.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                        } else if (val == true) {
-                            JOptionPane.showMessageDialog(null, "Ya hay un jugador con este n�mero.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                        } else if (index != 8) {
-                            int edad = (cal.get(Calendar.YEAR) - fechaNacimiento.getCalendar().get(Calendar.YEAR));
-                            JugCampo jc = new JugCampo(nom, date, peso, altura, lanz, bat, pais, pos, equipo, null, num, edad);
-                            estad = new Estadistica(AB, D, H, HR, doble, triple, BB, SO, 0, 0, 0);
-
-                            if (AB > 0 && H > 0) {
-                                estad.AVG(H, AB);
-                            }
-
-                            jc.setEstad(estad);
-                        
-                            if (modi == true) {
-                                Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().set(MiJugador, jc);
-                                Administracion.getInstancia().Guardar(Administracion.getInstancia());
-
-                                if (imgjug.exists()) {
-                                    try {
-                                        imagen = ImageIO.read(imgjug);
-                                        imgjug.delete();
-                                        imgjug = new File("imgjugadores/" + Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre() + ".png");
-                                        ImageIO.write(imagen, "png", new File(imgjug.toString()));
-                                    } catch (IOException e1) {
-                                        // TODO Auto-generated catch block
-                                        e1.printStackTrace();
-                                    }
-                                }
-
-                                JOptionPane.showMessageDialog(null, "Se modific� el jugador con exito.");
-                                dispose();
-                            } else {
-                                int input;
-                                Administracion.getInstancia().getMisEquipos().get(cbxEquipo.getSelectedIndex()).getJugadores().add(jc);
-                                Administracion.getInstancia().Guardar(Administracion.getInstancia());
-                                JOptionPane.showMessageDialog(null, "Se registr� el jugador con exito.");
-                                input = JOptionPane.showConfirmDialog(null, "�Desea registrar otro jugador?", "Confirmaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-                                if (input == 0) {
-                                    VaciarCampos();
-                                } else {
-                                    dispose();
-                                }
-                            }
-
-                        } else {
-                            int edad = (cal.get(Calendar.YEAR) - fechaNacimiento.getCalendar().get(Calendar.YEAR));
-                            Pitcher pit = new Pitcher(nom, date, peso, altura, lanz, bat, pais, pos, equipo, null, num, edad);
-                            estadPit = new EstadPitcher(0, H_Pitch, D_Pitch, CL, HR_Pitch, BB_Pitch, SO_Pitch, 0, 0, 0, 0);
-                            pit.setEstad(estadPit);
-
-                            if (modi == true) {
-                                Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().set(MiJugador, pit);
-                                Administracion.getInstancia().Guardar(Administracion.getInstancia());
-                                if (imgjug.exists()) {
-                                    try {
-                                        imagen = ImageIO.read(imgjug);
-                                        imgjug.delete();
-                                        imgjug = new File("imgjugadores/" + Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre() + ".png");
-                                        ImageIO.write(imagen, "png", new File(imgjug.toString()));
-                                    } catch (IOException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                }
-
-                                JOptionPane.showMessageDialog(null, "Se modific� el jugador con exito.");
-                                dispose();
-                            } else {
-                                int input;
-                                Administracion.getInstancia().getMisEquipos().get(cbxEquipo.getSelectedIndex()).getJugadores().add(pit);
-                                Administracion.getInstancia().Guardar(Administracion.getInstancia());
-                                JOptionPane.showMessageDialog(null, "Se registr� el jugador con exito.");
-                                input = JOptionPane.showConfirmDialog(null, "�Desea registrar otro jugador?", "Confirmaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-
-                                if (input == 0) {
-                                    VaciarCampos();
-                                } else {
-                                    dispose();
-                                }
-                            }
-
-                        }*/
                     }
                 });
                 btnRegistrar.setActionCommand("");
@@ -767,8 +669,6 @@ public class RegJugador extends JDialog {
                         byte[] immAsBytes = baos.toByteArray();
                         baos.close();
 
-                        /*DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-						fecha = format.format(date);*/
                         lanz = cbxLanzamiento.getSelectedItem().toString();
                         bat = cbxBateo.getSelectedItem().toString();
                         pais = cbxPais.getSelectedItem().toString();

@@ -167,7 +167,6 @@ public class RegLesion extends JDialog {
                             reposo = 18;
                         }
                         if (!tipo.isEmpty() && nom!=0 && !descrip.isEmpty()) {
-
                             try {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();

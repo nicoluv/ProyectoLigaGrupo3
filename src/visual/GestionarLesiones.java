@@ -83,10 +83,8 @@ public class GestionarLesiones extends JDialog {
 			
 			JScrollPane scrollPane = new JScrollPane();
 			scrollPane.setBounds(10, 67, 777, 245);
-			panel.add(scrollPane);
-			
-			
-			String[] header = {"Nombre", "Posición", "Estado", "Tipo de lesion", "Dias de reposo"};
+			panel.add(scrollPane);	
+			String[] header = {"Nombre", "Posiciï¿½n", "Estado", "Tipo de lesion", "Dias de reposo"};
 			model = new DefaultTableModel();
 			model.setColumnIdentifiers(header);
 			table = new JTable();
@@ -117,7 +115,7 @@ public class GestionarLesiones extends JDialog {
 			btnHistorialDeLesiones.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).getMisLesiones().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "El jugador nunca ha sufrido una lesión.");
+						JOptionPane.showMessageDialog(null, "El jugador nunca ha sufrido una lesiï¿½n.");
 					}
 					else {
 						HistorialLesiones HL = new HistorialLesiones(index, cbxEquipos.getSelectedIndex());
@@ -134,7 +132,7 @@ public class GestionarLesiones extends JDialog {
 			btnRecuperacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).isEstado() == false) {
-						int check = JOptionPane.showConfirmDialog(null, "¿El jugador se recuperó?", "Aviso", JOptionPane.WARNING_MESSAGE);
+						int check = JOptionPane.showConfirmDialog(null, "ï¿½El jugador se recuperï¿½?", "Aviso", JOptionPane.WARNING_MESSAGE);
 						if(check == JOptionPane.OK_OPTION) {
 							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).setMiLesion(null);
 							Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).setEstado(true);
@@ -156,7 +154,7 @@ public class GestionarLesiones extends JDialog {
 				btnRegistrarLesion.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						if(Administracion.getInstancia().getMisEquipos().get(cbxEquipos.getSelectedIndex()).getJugadores().get(index).isEstado() == false) {
-							JOptionPane.showMessageDialog(null, "El jugador ya se encuentra lesionado.","Información",JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "El jugador ya se encuentra lesionado.","Informaciï¿½n",JOptionPane.INFORMATION_MESSAGE);
 						}
 						else {
 							RegLesion rl = new RegLesion(index, cbxEquipos.getSelectedIndex());
@@ -187,7 +185,7 @@ public class GestionarLesiones extends JDialog {
 
 
 	private void loadtable() {
-		// TODO Auto-generated method stub
+
 		model.setRowCount(0);
 		
 		fila = new Object[model.getColumnCount()];

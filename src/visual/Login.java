@@ -127,11 +127,9 @@ public class Login extends JDialog {
         btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 11));
         btnRegistrar.setBounds(45, 252, 89, 23);
         panel.add(btnRegistrar);
-
         passwordField = new JPasswordField();
         passwordField.setBounds(120, 205, 138, 20);
         panel.add(passwordField);
-
         JLabel lblFoto = new JLabel("");
         lblFoto.setIcon(new ImageIcon(Login.class.getResource("/imgiconos/User-blue-icon.png")));
         lblFoto.setBounds(88, 12, 125, 125);

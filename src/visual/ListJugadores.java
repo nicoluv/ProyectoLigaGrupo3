@@ -153,7 +153,6 @@ public class ListJugadores extends JDialog {
                                 String t = table.getValueAt(table.getSelectedRow(), 2).toString();
                                 ts.setInt(1, cod_ju(s,t));
                                 ts.executeQuery();
-                                //System.out.println(table.getValueAt(table.getSelectedRow(), 1).toString());
 
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());

@@ -104,8 +104,6 @@ public class RegPartido extends JDialog {
                             Logger.getLogger(NewClass.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        //cbxVisitante.setSelectedIndex(0);
-                        //cbxVisitante.setEnabled(false);
                     }
                 }
             });

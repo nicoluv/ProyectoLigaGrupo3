@@ -44,7 +44,6 @@ public class RegEquipo extends JDialog {
     private JTextField txtManager;
     private BufferedImage imagen;
 
-
     public RegEquipo() {
         setResizable(false);
         setTitle("Registrar Equipo");

@@ -97,7 +97,6 @@ public class ListPartidos extends JDialog {
                                 PreparedStatement ts = db.prepareStatement("DELETE FROM Partido WHERE codigo_partido = ?");
                                 ts.setInt(1, Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString()));
                                 ts.executeQuery();
-                                //System.out.println(table.getValueAt(table.getSelectedRow(), 1).toString());
 
                             } catch (SQLException a) {
                                 System.out.println("Error " + a.getMessage());
@@ -223,7 +222,6 @@ public class ListPartidos extends JDialog {
                     }
                 }
                 
-
                 model.addRow(fila);
             }
         } catch (SQLException a) {

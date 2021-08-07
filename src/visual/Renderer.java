@@ -6,8 +6,7 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class Renderer extends DefaultTableCellRenderer {
-	
+public class Renderer extends DefaultTableCellRenderer {	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 			int row, int column) {
@@ -19,7 +18,6 @@ public class Renderer extends DefaultTableCellRenderer {
 		else if(table.getValueAt(row, 2).equals("En Forma")) {
 			this.setBackground(Color.WHITE);
 		}
-		
 		return this;
 	}
 }

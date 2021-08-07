@@ -88,7 +88,6 @@ public class Inicio extends JFrame {
 				panel_Nuevo.setVisible(true);
 				
 				
-				//Animacion.Animacion.mover_izquierda(0, -188, 2, 2, panel_izq);
 				
 				try {
 					Thread.sleep(150);
@@ -97,7 +96,6 @@ public class Inicio extends JFrame {
 					System.out.println("Thread Interrupted");
 				}
 				
-				//Animacion.Animacion.mover_derecha(-188, 0, 2, 2, panel_izq);
 				}
 			}
 		);
@@ -337,7 +335,6 @@ public class Inicio extends JFrame {
 				panel_Nuevo.setVisible(false);
 				panel_Gestion.setVisible(true);
 				
-				//Animacion.Animacion.mover_izquierda(0, -188, 2, 2, panel_izq);
 				
 				try {
 					Thread.sleep(150);
@@ -346,7 +343,7 @@ public class Inicio extends JFrame {
 					System.out.println("Thread Interrupted");
 				}
 				
-				//Animacion.Animacion.mover_derecha(-188, 0, 2, 2, panel_izq);
+
 			}
 		});
 		btnGestion.setColorHover(new Color(0, 102, 204));

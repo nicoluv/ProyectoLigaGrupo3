@@ -118,10 +118,6 @@ public class HistorialLesiones extends JDialog {
                 System.out.println("Error " + a.getMessage());
             }
 
-//			lblNombre.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getNombre());
-//			lblEdad.setText(String.valueOf(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getEdad()));
-//			lblPos.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getPosicion());
-//			lblEquipo.setText(Administracion.getInstancia().getMisEquipos().get(MiEquipo).getNombre());
 			{
 				lblNombre_1 = new JLabel("Nombre:");
 				lblNombre_1.setBounds(12, 28, 55, 16);
@@ -164,8 +160,6 @@ public class HistorialLesiones extends JDialog {
 	public static void loadtable() {
 		
 		model.setRowCount(0);
-		Date date;
-		String fecha;
 		
 		fila = new Object[model.getColumnCount()];
                 
@@ -188,19 +182,6 @@ public class HistorialLesiones extends JDialog {
         }
                 
                 
-		
-//		for (int i = 0; i < Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().size(); i++) {
-//			fila[0] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getTipoLesion();
-//			fila[1] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getAtendNombre();
-//			fila[2] = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getDiasRec() + " Dias";
-//			
-//			date = Administracion.getInstancia().getMisEquipos().get(MiEquipo).getMisJugadores().get(MiJugador).getMisLesiones().get(i).getFechaLesion();
-//			fecha = format.format(date);
-//			
-//			fila[3] = fecha;
-//			
-//			model.addRow(fila);
-//		}
 		
 	}
 }

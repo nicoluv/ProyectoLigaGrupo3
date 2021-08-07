@@ -137,7 +137,6 @@ public class ListEquipos extends JDialog {
             }
         }
     }
-
     public static void loadTable() {
         model.setRowCount(0);
 
@@ -160,7 +159,6 @@ public class ListEquipos extends JDialog {
                 fila[2] = eestado;
                 fila[3] = emanager;
                 fila[4] = enombre_equipo;
-
                 model.addRow(fila);
 
             }

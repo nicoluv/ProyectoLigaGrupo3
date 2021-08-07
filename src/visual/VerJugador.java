@@ -312,8 +312,6 @@ public class VerJugador extends JDialog {
             }
         }
     }
-//{"Al Bate", "Carreras", "Hits", "Errores", "2B", "Juegos Jugados", "AVG"};
-//{"Juegos Iniciados", "Hits", "Carreras", "Jonrones", "Ponches", "Victorias", "PromCL"};
 
     public static void loadtable() {
         model.setRowCount(0);
@@ -373,12 +371,6 @@ public class VerJugador extends JDialog {
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());
         }
-
-        //File imgjug = new File("imgjugadores/" + Administracion.getInstancia().getMisEquipos().get(MiEquipo).getJugadores().get(MiJugador).getNombre() + ".png");
-
-        /*if (imgjug.exists()) {
-            rsscalelabel.RSScaleLabel.setScaleLabel(lblFoto, imgjug.toString());
-        }*/
     }
 
     public void RecargarDatos() {
@@ -391,8 +383,6 @@ public class VerJugador extends JDialog {
             while (rs.next()) {
                 String fname = rs.getString("nombre");
                 String fapellido = rs.getString("apellido");
-                Date ffecha = rs.getDate("fecha_nacimento");
-                int fpeso = rs.getInt("peso");
                 String fbat = rs.getString("bateo");
                 String flaz = rs.getString("lanzamiento");
                 String fpais = rs.getString("pais");
