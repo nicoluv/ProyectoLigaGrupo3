@@ -52,7 +52,7 @@ public class ListEquipos extends JDialog {
             JScrollPane scrollPane = new JScrollPane();
             contentPanel.add(scrollPane, BorderLayout.CENTER);
             {
-                String[] header = {"codigo_equipo", "Estadio", "Estado","manager", "nombre_equipo"};
+                String[] header = {"codigo_equipo", "Estadio", "Estado", "manager", "nombre_equipo"};
                 model = new DefaultTableModel();
                 model.setColumnIdentifiers(header);
 
@@ -81,27 +81,27 @@ public class ListEquipos extends JDialog {
                 btnEliminar.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 
-                        if (Administracion.getInstancia().getMisEquipos().size() == 0 || table.getSelectedRow() < 0) {
+                        if (table.getSelectedRow() < 0) {
                             JOptionPane.showMessageDialog(null, "No hay elementos seleccionados.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             int input = JOptionPane.showConfirmDialog(null, "�Seguro que desea eliminar el equipo?", "Confirmaci�n", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
                             if (input == 0) {
-                                
-                                try {
-                                Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
-                                Statement st = db.createStatement();
-                                ResultSet rs;
 
-                                JOptionPane.showMessageDialog(null, "El equipo ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                dispose();
-                                PreparedStatement ts = db.prepareStatement("DELETE FROM Equipo WHERE codigo_equipo = ?" );
-                                ts.setString(1, table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
-                                ts.executeQuery();
-                                loadTable();
-                            } catch (SQLException a) {
-                                System.out.println("Error " + a.getMessage());
-                            }
+                                try {
+                                    Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+                                    Statement st = db.createStatement();
+                                    ResultSet rs;
+
+                                    JOptionPane.showMessageDialog(null, "El equipo ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
+                                    dispose();
+                                    PreparedStatement ts = db.prepareStatement("DELETE FROM Equipo WHERE codigo_equipo = ?");
+                                    ts.setString(1, table.getValueAt(table.getSelectedRow(), table.getSelectedColumn()).toString());
+                                    ts.executeQuery();
+                                    loadTable();
+                                } catch (SQLException a) {
+                                    System.out.println("Error " + a.getMessage());
+                                }
 //                               
                             }
                         }
@@ -162,7 +162,7 @@ public class ListEquipos extends JDialog {
                 fila[4] = enombre_equipo;
 
                 model.addRow(fila);
-   
+
             }
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());
