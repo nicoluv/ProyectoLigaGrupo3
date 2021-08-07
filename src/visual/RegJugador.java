@@ -44,6 +44,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
@@ -55,6 +57,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.BevelBorder;
 
@@ -569,7 +572,7 @@ public class RegJugador extends JDialog {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();
                                 ResultSet rs;
-                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND numero='" + num + "'");
+                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND apellido='" + apell + "'");
                                 if (nom.isEmpty() || date == null || cbxLanzamiento.getSelectedIndex() == 0 || cbxBateo.getSelectedIndex() == 0
                                         || cbxPais.getSelectedIndex() == 0 || cbxPosicion.getSelectedIndex() == 0 || peso == 0 || altura == 0) {
                                     JOptionPane.showMessageDialog(null, "Has dejado campos vac�os o sin seleccionar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -792,12 +795,12 @@ public class RegJugador extends JDialog {
                         HR_Pitch = Integer.parseInt(spnHR_Pitch.getValue().toString());
                         SO_Pitch = Integer.parseInt(spnSO_Pitch.getValue().toString());
                         if ("Pitcher".equals(cbxPosicion.getSelectedItem().toString())) {
-                            int sa = cod_ju(nom, num);
+                            int sa = cod_ju(nom, apell);
                             try {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();
                                 ResultSet rs;
-                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND numero='" + num + "'");
+                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND apellido='" + apell + "'");
                                 if (nom.isEmpty() || date == null || cbxLanzamiento.getSelectedIndex() == 0 || cbxBateo.getSelectedIndex() == 0
                                         || cbxPais.getSelectedIndex() == 0 || cbxPosicion.getSelectedIndex() == 0 || peso == 0 || altura == 0) {
                                     JOptionPane.showMessageDialog(null, "Has dejado campos vac�os o sin seleccionar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -808,7 +811,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Este jugador no existe", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE nombre = ?");
+                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE codigo_jugador = ?");
                                     ts.setInt(1, num);
                                     ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
@@ -819,7 +822,7 @@ public class RegJugador extends JDialog {
                                     ts.setInt(8, pos);
                                     ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
                                     ts.setBinaryStream(9, bais, immAsBytes.length);
-                                    ts.setString(10, nom);
+                                    ts.setInt(10, sa);
                                     ts.executeUpdate();
                                     PreparedStatement sts = db.prepareStatement("UPDATE EstadisticaPitcher SET H = ?, D = ?, CL = ?, BB = ?, HR = ?, SO = ? WHERE codigo_jugador = ?");
                                     sts.setInt(1, H);
@@ -835,13 +838,13 @@ public class RegJugador extends JDialog {
                                 System.out.println("Error " + a.getMessage());
                             }
                         } else {
-                            int sa = cod_ju(nom, num);
+                            int sa = cod_ju(nom, apell);
 
                             try {
                                 Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
                                 Statement st = db.createStatement();
                                 ResultSet rs;
-                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND numero='" + num + "'");
+                                rs = st.executeQuery("SELECT * FROM Jugador WHERE nombre='" + nom + "' AND apellido='" + apell + "'");
                                 if (nom.isEmpty() || date == null || cbxLanzamiento.getSelectedIndex() == 0 || cbxBateo.getSelectedIndex() == 0
                                         || cbxPais.getSelectedIndex() == 0 || cbxPosicion.getSelectedIndex() == 0 || peso == 0 || altura == 0) {
                                     JOptionPane.showMessageDialog(null, "Has dejado campos vac�os o sin seleccionar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -852,7 +855,7 @@ public class RegJugador extends JDialog {
                                     JOptionPane.showMessageDialog(null, "Este jugador no existe", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
                                 } else {
                                     JOptionPane.showMessageDialog(null, "Se ha actualizado el jugador correctamente", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
-                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE nombre = ?");
+                                    PreparedStatement ts = db.prepareStatement("UPDATE Jugador SET numero = ?, fecha_nacimento = ?, peso = ?, altura = ?, bateo = ?, lanzamiento = ?, pais = ?, codigo_posc =  ?, imagen =  ? WHERE codigo_jugador = ?");
                                     ts.setInt(1, num);
                                     ts.setDate(2, fechita);
                                     ts.setInt(3, peso);
@@ -863,7 +866,7 @@ public class RegJugador extends JDialog {
                                     ts.setInt(8, pos);
                                     ByteArrayInputStream bais = new ByteArrayInputStream(immAsBytes);
                                     ts.setBinaryStream(9, bais, immAsBytes.length);
-                                    ts.setString(10, nom);
+                                    ts.setInt(10, sa);
                                     ts.executeUpdate();
                                     PreparedStatement sts = db.prepareStatement("UPDATE Estadistica SET AB = ?, D = ?, H = ?, DOSB = ?, TRESB = ?, BB = ?, HR = ?, SO = ? FROM Estadistica WHERE Estadistica.codigo_jugador = ?");
                                     sts.setInt(1, AB);
@@ -985,13 +988,13 @@ public class RegJugador extends JDialog {
         return fcod;
     }
 
-    public int cod_ju(String s, int b) {
+    public int cod_ju(String s, String b) {
         int fcod = 0;
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT codigo_Jugador FROM Jugador WHERE nombre = '" + s + "' AND numero = " + b + "");
+            rs = st.executeQuery("SELECT codigo_Jugador FROM Jugador WHERE nombre = '" + s + "' AND apellido = '" + b + "'");
             while (rs.next()) {
                 fcod = rs.getInt("codigo_Jugador");
             }
@@ -1033,6 +1036,7 @@ public class RegJugador extends JDialog {
                         int fbb = rs.getInt("BB");
                         int fhr = rs.getInt("HR");
                         int fso = rs.getInt("SO");
+                        byte[] fimage = rs.getBytes("imagen");
                         txtNombre.setText(fname);
                         txtApellido.setText(fapellido);
                         cbxPais.setSelectedItem(fpais);
@@ -1051,6 +1055,9 @@ public class RegJugador extends JDialog {
                         spnHR_Pitch.setValue(fhr);
                         spnSO_Pitch.setValue(fso);
                         spnCL.setValue(fcl);
+                        Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                        ImageIcon icon = new ImageIcon(img);
+                        lblImagen.setIcon(icon);
 
                     }
                 } catch (SQLException a) {
@@ -1081,6 +1088,7 @@ public class RegJugador extends JDialog {
                         int fbb = rs.getInt("BB");
                         int fhr = rs.getInt("HR");
                         int fso = rs.getInt("SO");
+                        byte[] fimage = rs.getBytes("imagen");
                         txtNombre.setText(fname);
                         txtApellido.setText(fapellido);
                         cbxPais.setSelectedItem(fpais);
@@ -1101,6 +1109,9 @@ public class RegJugador extends JDialog {
                         spnBB.setValue(fbb);
                         spnHR.setValue(fhr);
                         spnSO.setValue(fso);
+                        Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                        ImageIcon icon = new ImageIcon(img);
+                        lblImagen.setIcon(icon);
                     }
                 } catch (SQLException a) {
                     System.out.println("Error " + a.getMessage());
@@ -1112,15 +1123,15 @@ public class RegJugador extends JDialog {
 
     public void Modificar_pit() {
         String nom;
-        int num;
+        String num;
         setTitle("Modificar jugador");
         nom = txtNombre.getText();
-        num = Integer.parseInt(spnNumero.getValue().toString());
+        num = txtApellido.getText();
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher WHERE Jugador.codigo_Jugador = EstadisticaPitcher.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.numero='" + num + "'");
+            rs = st.executeQuery("SELECT Jugador.*, EstadisticaPitcher.* FROM Jugador, EstadisticaPitcher WHERE Jugador.codigo_Jugador = EstadisticaPitcher.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.apellido='" + num + "'");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
                 String fapellido = rs.getString("apellido");
@@ -1139,6 +1150,7 @@ public class RegJugador extends JDialog {
                 int fbb = rs.getInt("BB");
                 int fhr = rs.getInt("HR");
                 int fso = rs.getInt("SO");
+                byte[] fimage = rs.getBytes("imagen");
                 txtNombre.setText(fname);
                 txtApellido.setText(fapellido);
                 cbxPais.setSelectedItem(fpais);
@@ -1157,6 +1169,9 @@ public class RegJugador extends JDialog {
                 spnHR_Pitch.setValue(fhr);
                 spnSO_Pitch.setValue(fso);
                 spnCL.setValue(fcl);
+                Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                ImageIcon icon = new ImageIcon(img);
+                lblImagen.setIcon(icon);
 
             }
         } catch (SQLException a) {
@@ -1166,15 +1181,15 @@ public class RegJugador extends JDialog {
 
     public void Modificar_camp() {
         String nom;
-        int num;
+        String num;
         setTitle("Modificar jugador");
         nom = txtNombre.getText();
-        num = Integer.parseInt(spnNumero.getValue().toString());
+        num = txtApellido.getText();
         try {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica WHERE Jugador.codigo_Jugador = Estadistica.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.numero='" + num + "'");
+            rs = st.executeQuery("SELECT Jugador.*, Estadistica.* FROM Jugador, Estadistica WHERE Jugador.codigo_Jugador = Estadistica.codigo_jugador AND Jugador.nombre='" + nom + "' AND Jugador.apellido='" + num + "'");
             while (rs.next()) {
                 String fname = rs.getString("nombre");
                 String fapellido = rs.getString("apellido");
@@ -1195,6 +1210,7 @@ public class RegJugador extends JDialog {
                 int fbb = rs.getInt("BB");
                 int fhr = rs.getInt("HR");
                 int fso = rs.getInt("SO");
+                byte[] fimage = rs.getBytes("imagen");
                 txtNombre.setText(fname);
                 txtApellido.setText(fapellido);
                 cbxPais.setSelectedItem(fpais);
@@ -1215,6 +1231,9 @@ public class RegJugador extends JDialog {
                 spnBB.setValue(fbb);
                 spnHR.setValue(fhr);
                 spnSO.setValue(fso);
+                Image img = Toolkit.getDefaultToolkit().createImage(fimage);
+                ImageIcon icon = new ImageIcon(img);
+                lblImagen.setIcon(icon);
             }
         } catch (SQLException a) {
             System.out.println("Error " + a.getMessage());

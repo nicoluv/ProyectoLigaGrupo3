@@ -72,7 +72,7 @@ public class ListJugadores extends JDialog {
             scrollPane.setBounds(10, 50, 871, 380);
             panel.add(scrollPane);
 
-            String[] header = {"Codigo", "Nombre", "Posici�n", "Pais de Origen", "Altura"};
+            String[] header = {"Codigo", "Nombre", "Apellido", "Posici�n", "Pais de Origen", "Altura"};
             model = new DefaultTableModel();
             model.setColumnIdentifiers(header);
             table = new JTable();
@@ -148,8 +148,10 @@ public class ListJugadores extends JDialog {
 
                                 JOptionPane.showMessageDialog(null, "El jugador ha sido eliminado.", "Informaci�n", JOptionPane.INFORMATION_MESSAGE);
 
-                                PreparedStatement ts = db.prepareStatement("DELETE FROM Jugador WHERE nombre = ?");
-                                ts.setString(1, table.getValueAt(table.getSelectedRow(), 1).toString());
+                                PreparedStatement ts = db.prepareStatement("DELETE FROM Jugador WHERE codigo_jugador = ?");
+                                String s = table.getValueAt(table.getSelectedRow(), 1).toString();
+                                String t = table.getValueAt(table.getSelectedRow(), 2).toString();
+                                ts.setInt(1, cod_ju(s,t));
                                 ts.executeQuery();
                                 //System.out.println(table.getValueAt(table.getSelectedRow(), 1).toString());
 
@@ -200,6 +202,23 @@ public class ListJugadores extends JDialog {
         }
         return fcod;
     }
+    
+    public int cod_ju(String s, String b) {
+        int fcod = 0;
+        try {
+            Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
+            Statement st = db.createStatement();
+            ResultSet rs;
+            rs = st.executeQuery("SELECT codigo_Jugador FROM Jugador WHERE nombre = '" + s + "' AND apellido = '" + b + "'");
+            while (rs.next()) {
+                fcod = rs.getInt("codigo_Jugador");
+            }
+
+        } catch (SQLException a) {
+            System.out.println("Error " + a.getMessage());
+        }
+        return fcod;
+    }
 
     public static void loadTable(int s) {
         model.setRowCount(0);
@@ -208,18 +227,20 @@ public class ListJugadores extends JDialog {
             Connection db = DriverManager.getConnection("jdbc:sqlserver://192.168.77.24:1433;database=proyectoLigaBeisbol_grupo3", "jhernandez", "Junior2000");
             Statement st = db.createStatement();
             ResultSet rs;
-            rs = st.executeQuery("SELECT Jugador.codigo_Jugador, Jugador.nombre, Jugador.pais, Jugador.altura, Posicion.descripcion FROM Jugador, Posicion WHERE Jugador.codigo_posc = Posicion.codigo_posc AND Jugador.codigo_equipo = '" + s + "'");
+            rs = st.executeQuery("SELECT Jugador.codigo_Jugador, Jugador.nombre, Jugador.apellido, Jugador.pais, Jugador.altura, Posicion.descripcion FROM Jugador, Posicion WHERE Jugador.codigo_posc = Posicion.codigo_posc AND Jugador.codigo_equipo = '" + s + "'");
             while (rs.next()) {
                 String fcodigo = rs.getString("codigo_Jugador");
                 String fname = rs.getString("nombre");
+                String fapellido = rs.getString("apellido"); 
                 String fpais = rs.getString("pais");
                 int faltura = rs.getInt("altura");
                 String fpos = rs.getString("descripcion");
                 fila[0] = fcodigo;
                 fila[1] = fname;
-                fila[2] = fpos;
-                fila[3] = fpais;
-                fila[4] = faltura;
+                fila[2] = fapellido;
+                fila[3] = fpos;
+                fila[4] = fpais;
+                fila[5] = faltura;
 
                 model.addRow(fila);
             }
